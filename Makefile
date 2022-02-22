@@ -1,4 +1,5 @@
 
+DEBUG = -g
 
 all:
-	gcc mongoose.c mongoose.h main.c -o server
+	gcc $(DEBUG) mongoose.h mongoose.c header.h utils_libft.c main.c -o server -lbsd
