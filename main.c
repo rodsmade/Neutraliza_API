@@ -1,8 +1,7 @@
-#include "mongoose.h"
 #include "header.h"
-#include <stdio.h> // fopen(), fread()
 
 char	*g_landing_page_html;
+// t_word	*g_words_list;
 
 int	count_spaces(const char *body_str)
 {
@@ -18,70 +17,16 @@ int	count_spaces(const char *body_str)
 	return (count);
 }
 
-char	*fetch_word(struct mg_str body)
-{
-	int i;
-	static char	*buff = NULL;
-	static int	buff_pos = 0;
-	char	*word = NULL;
-
-	if (!buff)
-	{
-		if (!(buff = calloc(sizeof(char), (body.len + 1))))
-			return (NULL);
-		strlcpy(buff, body.ptr, body.len);
-		printf("inicio do buffer: >>%s<<z\n", buff);
-	}
-	i = -1;
-	while (buff[++i + buff_pos])
-	{
-		if (buff[i + buff_pos] == ' ')
-		{
-			word = calloc(sizeof(char), i + 1);
-			word[i] = '\0';
-			strlcpy(word, buff + buff_pos, i + 1);
-			buff_pos += i + 1;
-			return (word);
-		}
-		if (buff[i] == '\0')
-		{
-			buff_pos = 0;
-			free(buff);
-			buff = NULL;
-			break ;
-		}
-	}
-	if (buff[buff_pos])
-	{
-		word = calloc(sizeof(char), i + 1);
-		word[i] = '\0';
-		strlcpy(word, buff + buff_pos, i + 1);
-	}
-	if (buff[i + buff_pos] == '\0')
-	{
-		buff_pos = 0;
-		free(buff);
-		buff = NULL;
-	}
-	return (word);
-}
-
-char	**parse_body(struct mg_str body)
+char	**split_and_trim_body(struct mg_str body)
 {
 	char **list_of_words;
-	int word_count;
+	int	i = -1;
 
-	word_count = count_spaces(body.ptr) + 1;
-	// printf("word count: %d\n", word_count);
-	list_of_words = malloc(sizeof(*list_of_words) * (word_count + 1));
-	list_of_words[word_count] = NULL;
-	int i = -1;
-	while (++i < word_count)
+	list_of_words = ft_split(body.ptr, ' ');
+	while (list_of_words[++i])
 	{
-		list_of_words[i] = fetch_word(body);
-		printf("word %d: %s\n", i, list_of_words[i]);
-		if (list_of_words[i] == NULL)
-			return (NULL);		//deu ruim cancela desaloca memória etc.
+		list_of_words[i] = ft_strtrim(list_of_words[i], "!.,?");
+		printf("word[%i]: %s\n", i, list_of_words[i]);
 	}
 	return (list_of_words);
 }
@@ -94,9 +39,9 @@ static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", g_landing_page_html);
 		if (mg_http_match_uri(hm, "/translate"))
 		{
-			char **words = parse_body(hm->body);
-			// mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Yr translation is coming! body: %s; word[0]: %s, word[1]: %s, word[2]: %s", hm->body, words[0], words[1], words[2]);
-			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Yr translation is coming! body: %s, word[0]: %s, teste: %s", (hm->body).ptr, words[0], "teste");
+			char **words_list = split_and_trim_body(hm->body);
+			// g_words_list = parse_words(words_list);
+			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Yr translation is coming!\n\n\nbody: %s\n\n\nword[0]: %s, %s", (hm->body).ptr, words_list[0], "teste");
 		}
 		else
 			mg_http_reply(c, 400, "Content-Type: text/html; charset=UTF-8\r\n", "Bad bad URI :(");
