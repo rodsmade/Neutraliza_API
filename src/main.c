@@ -42,7 +42,9 @@ static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 		if (mg_http_match_uri(hm, "/translate"))
 		{
 			char **split_body = split_and_trim_body(hm->body);
-			parse_words(split_body);	//api_call
+			t_word_list	*words_list = NULL;
+			create_word_list(split_body, &words_list);
+			parse_words(&words_list);	//api_call
 			char *translation = translate();
 			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Translated piece of text: %s", translation);
 		}

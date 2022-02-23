@@ -48,9 +48,10 @@ t_word_list	*ft_lstlast(t_word_list *lst);
 void	ft_lstadd_back(t_word_list **lst, t_word_list *new);
 
 // services_ext_api_calls.c
-void	parse_words(char **split_body);
+void	parse_words(t_word_list	**words_list);
 
 // services_translation.c
+void	create_word_list(char **split_body, t_word_list	**words_list);
 char	*translate(void);
 
 #endif
