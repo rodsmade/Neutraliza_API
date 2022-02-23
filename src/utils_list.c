@@ -1,16 +1,17 @@
 #include "header.h"
 
-t_list	*ft_lstnew(void *content)
+// TEST_OK!
+t_word_list	*ft_lstnew(t_word word)
 {
-	t_list	*newitem;
+	t_word_list	*newitem;
 
-	newitem = malloc(sizeof(t_list));
-	newitem->content = content;
+	newitem = malloc(sizeof(t_word_list));
+	newitem->word = word;
 	newitem->next = NULL;
 	return (newitem);
 }
 
-int	ft_lstsize(t_list *lst)
+int	ft_lstsize(t_word_list *lst)
 {
 	int	count_items;
 
@@ -25,7 +26,7 @@ int	ft_lstsize(t_list *lst)
 	return (count_items);
 }
 
-t_list	*ft_lstlast(t_list *lst)
+t_word_list	*ft_lstlast(t_word_list *lst)
 {
 	if (lst == NULL)
 		return (NULL);
@@ -34,9 +35,9 @@ t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_word_list **lst, t_word_list *new)
 {
-	t_list	*last_element;
+	t_word_list	*last_element;
 
 	if (*lst == NULL)
 		*lst = new;

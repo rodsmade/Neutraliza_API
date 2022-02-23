@@ -1,21 +1,6 @@
 #include "header.h"
 
 char		*g_landing_page_html;
-t_word_list	*g_words_list;
-
-int	count_spaces(const char *body_str)
-{
-	int	i, count;
-
-	count = 0;
-	i = -1;
-	while (body_str[++i])
-		if (body_str[i] == ' ')
-			count++;
-	if (body_str[i - 1] == ' ')
-		count--;
-	return (count);
-}
 
 char	**split_and_trim_body(struct mg_str body)
 {
@@ -31,25 +16,7 @@ char	**split_and_trim_body(struct mg_str body)
 	return (list_of_words);
 }
 
-static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
-	if (ev == MG_EV_HTTP_MSG)
-	{
-		struct mg_http_message *hm = (struct mg_http_message *) ev_data;
-		if (mg_http_match_uri(hm, "/"))
-			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", g_landing_page_html);
-		if (mg_http_match_uri(hm, "/translate"))
-		{
-			char **split_body = split_and_trim_body(hm->body);
-			parse_words(split_body);	//api_call
-			char *translation = translate();
-			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Translated piece of text: %s", translation);
-		}
-		else
-			mg_http_reply(c, 400, "Content-Type: text/html; charset=UTF-8\r\n", "Bad bad URI :(");
-	}
-}
-
-void	load_landing_page(void)
+void	load_resources(void)
 {
 	long	length;
 	FILE	*f = fopen ("resources/landing-page.html", "rb");
@@ -66,14 +33,33 @@ void	load_landing_page(void)
 	}
 }
 
+static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
+	if (ev == MG_EV_HTTP_MSG)
+	{
+		struct mg_http_message *hm = (struct mg_http_message *) ev_data;
+		if (mg_http_match_uri(hm, "/"))
+			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", g_landing_page_html);
+		if (mg_http_match_uri(hm, "/translate"))
+		{
+			char **split_body = split_and_trim_body(hm->body);
+			parse_words(split_body);	//api_call
+			char *translation = translate();
+			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Translated piece of text: %s", translation);
+		}
+		else
+			mg_http_reply(c, 400, "Content-Type: text/html; charset=UTF-8\r\n", "Bad bad request ヽ(O`皿'O)ﾉ");
+	}
+}
+
 int	main(int argc, char *argv[]) {
 	struct mg_mgr mgr;
 
-	mg_mgr_init(&mgr);										// Init manager
-	load_landing_page();
+	mg_mgr_init(&mgr);	// Init manager
+	load_resources();	// load resources do memory
 	if (!mg_http_listen(&mgr, "http://localhost:4242", fn, &mgr))	// Setup listener
 		return (1);	// error! tratar depois
-	for (;;) mg_mgr_poll(&mgr, 1000);						// Event loop
-	mg_mgr_free(&mgr);										// Cleanup
+	while (42)
+		mg_mgr_poll(&mgr, 1000);	// Event loop
+	mg_mgr_free(&mgr);	// Cleanup
 	return 0;
 }

@@ -6,9 +6,11 @@
 # include <stdio.h> // fopen(), fread()
 # include <stdlib.h>
 # include <bsd/string.h>
+# include <string.h>
 
 // ------------------------------------------------		TYPEDEFS	-----------
 typedef enum e_class {
+	none,
 	adjective,
 	adverb,
 	article,
@@ -19,18 +21,12 @@ typedef enum e_class {
 	pronoun,
 	noun,
 	verb
-}	t_class;
-
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
+}	t_enum_class;
 
 typedef struct s_word
 {
 	char			*name;
-	t_class			class;
+	t_enum_class	class;
 }					t_word;
 
 typedef	struct s_word_list
@@ -46,10 +42,10 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char delimiter);
 
 // utils_list.c
-t_list	*ft_lstnew(void *content);
-int		ft_lstsize(t_list *lst);
-t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
+t_word_list	*ft_lstnew(t_word word);
+int		ft_lstsize(t_word_list *lst);
+t_word_list	*ft_lstlast(t_word_list *lst);
+void	ft_lstadd_back(t_word_list **lst, t_word_list *new);
 
 // services_ext_api_calls.c
 void	parse_words(char **split_body);
