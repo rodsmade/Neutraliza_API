@@ -46,5 +46,11 @@ $(NAME): $(OBJECTS)
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-# %.o: $(SRC_PATH)%.c
-# 	$(CC) $(CFLAGS) -c $< -o $(OBJ_PATH)$@
+# SANITIZE
+# -> deletes all .o files; also runs libft's clean target
+clean:
+	@$(RM) $(OBJECTS)
+
+# -> deletes .o files + static library file + executable; also runs libft's fclean target
+fclean: clean
+	@$(RM) $(NAME)
