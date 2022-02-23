@@ -1,7 +1,7 @@
 #include "header.h"
 
-char	*g_landing_page_html;
-// t_word	*g_words_list;
+char		*g_landing_page_html;
+t_word_list	*g_words_list;
 
 int	count_spaces(const char *body_str)
 {
@@ -39,9 +39,10 @@ static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", g_landing_page_html);
 		if (mg_http_match_uri(hm, "/translate"))
 		{
-			char **words_list = split_and_trim_body(hm->body);
-			// g_words_list = parse_words(words_list);
-			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Yr translation is coming!\n\n\nbody: %s\n\n\nword[0]: %s, %s", (hm->body).ptr, words_list[0], "teste");
+			char **split_body = split_and_trim_body(hm->body);
+			parse_words(split_body);	//api_call
+			char *translation = translate();
+			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Translated piece of text: %s", translation);
 		}
 		else
 			mg_http_reply(c, 400, "Content-Type: text/html; charset=UTF-8\r\n", "Bad bad URI :(");
@@ -51,7 +52,7 @@ static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 void	load_landing_page(void)
 {
 	long	length;
-	FILE	*f = fopen ("landing-page.html", "rb");
+	FILE	*f = fopen ("resources/landing-page.html", "rb");
 
 	if (f)
 	{
@@ -67,11 +68,11 @@ void	load_landing_page(void)
 
 int	main(int argc, char *argv[]) {
 	struct mg_mgr mgr;
+
 	mg_mgr_init(&mgr);										// Init manager
 	load_landing_page();
-//	mg_http_listen(&mgr, "http://localhost:4242", fn, &mgr);	// Setup listener
-	if (!mg_http_listen(&mgr, "http://localhost:4242", fn, &mgr))
-	return (1);	// error!
+	if (!mg_http_listen(&mgr, "http://localhost:4242", fn, &mgr))	// Setup listener
+		return (1);	// error! tratar depois
 	for (;;) mg_mgr_poll(&mgr, 1000);						// Event loop
 	mg_mgr_free(&mgr);										// Cleanup
 	return 0;
