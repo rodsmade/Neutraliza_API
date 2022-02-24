@@ -41,12 +41,13 @@ static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", g_landing_page_html);
 		if (mg_http_match_uri(hm, "/translate"))
 		{
+			printf("Body: %s\n", hm->body.ptr);
 			char **split_body = split_and_trim_body(hm->body);
 			t_word_list	*words_list = NULL;
 			create_word_list(split_body, &words_list);
 			parse_words(&words_list);	//api_call
 			char *translation = translate();
-			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "Translated piece of text: %s", translation);
+			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "{\"Translation\": \"%s\"}", translation);
 		}
 		else
 			mg_http_reply(c, 400, "Content-Type: text/html; charset=UTF-8\r\n", "Bad bad request ヽ(O`皿'O)ﾉ");

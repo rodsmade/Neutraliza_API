@@ -52,10 +52,55 @@
 			}
 		}
 	</style>
+	<script>
+
+	</script>
 </head>
 <body>
 	<section>
 		<h1>Neutraliza</h1>
 	</section>
+	<input type="text" id="myText" value="Some text..." />
+
+	<button onclick="postFunc()">Try it</button>
+
+	<p id="demo"></p>
 </body>
+<script>
+	document.getElementById("demo").innerHTML = "Hello JavaScript!";
+
+	function myFunction() {
+		var x = document.getElementById("myText").value;
+		document.getElementById("demo").innerHTML = x;
+	}
+
+	let _data = {
+		title: "foo",
+		body: "bar",
+		userId: 1
+	};
+
+	const postFunc = async () => {
+		const title = document.getElementById("myText").value;
+		_data.title = title;
+
+		try {
+		console.log(title);
+		const response = await fetch(
+			"http://localhost:4242/translate",
+			{
+			method: "POST",
+			body: title,
+			headers: { "Content-type": "text/plain" }
+			}
+		);
+		const data = await response.json();
+		console.log(data);
+
+		document.getElementById("demo").innerHTML = JSON.stringify(data);
+		} catch (error) {
+		console.log(error);
+		}
+	};
+	</script>
 </html>
