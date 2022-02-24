@@ -38,6 +38,8 @@ static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 	{
 		struct mg_http_message *hm = (struct mg_http_message *) ev_data;
 		if (mg_http_match_uri(hm, "/"))
+			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "{\"api-status\": \"A-OK, Up and Running, WOO-HOO!!!\"}");
+		if (mg_http_match_uri(hm, "/home"))
 			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", g_landing_page_html);
 		if (mg_http_match_uri(hm, "/translate"))
 		{
