@@ -9,6 +9,8 @@
 # include <string.h>
 
 // ------------------------------------------------		TYPEDEFS	-----------
+typedef char *string;
+
 typedef enum e_class {
 	none,
 	adjective,
@@ -35,23 +37,28 @@ typedef	struct s_word_list
 	t_word				word;
 }					t_word_list;
 
+typedef struct s_logger
+{
+	
+}					t_logger;
+
 // ------------------------------------------------		PROTOTYPES	-----------
-// utils_libft.c
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strtrim(char const *s1, char const *set);
-char	**ft_split(char const *s, char delimiter);
+// utils_libft.c + utils_libft_ft_split.c
+char		*ft_substr(char const *s, unsigned int start, size_t len);
+char		*ft_strtrim(char const *s1, char const *set);
+char		**ft_split(char const *s, char delimiter);
 
 // utils_list.c
 t_word_list	*ft_lstnew(t_word word);
-int		ft_lstsize(t_word_list *lst);
+int			ft_lstsize(t_word_list *lst);
 t_word_list	*ft_lstlast(t_word_list *lst);
-void	ft_lstadd_back(t_word_list **lst, t_word_list *new);
+void		ft_lstadd_back(t_word_list **lst, t_word_list *new);
 
 // services_ext_api_calls.c
-void	parse_words(t_word_list	**words_list);
+void		parse_words(t_word_list	**words_list);
 
 // services_translation.c
-void	create_word_list(char **split_body, t_word_list	**words_list);
-char	*translate(void);
+void		create_word_list(string *split_body, t_word_list	**words_list);
+string		translate(void);
 
 #endif

@@ -1,6 +1,6 @@
 #include "server.h"
 
-void	create_word_list(char **split_body, t_word_list	**words_list)
+void	create_word_list(string *split_body, t_word_list	**words_list)
 {
 	t_word		new_word;
 	int			i = -1;
@@ -14,7 +14,7 @@ void	create_word_list(char **split_body, t_word_list	**words_list)
 	return ;
 }
 
-char	*translate(void)
+string	translate(void)
 {
 	return("sua tradução sr.");
 }

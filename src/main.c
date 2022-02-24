@@ -2,9 +2,9 @@
 
 char		*g_landing_page_html;
 
-char	**split_and_trim_body(struct mg_str body)
+string*split_and_trim_body(struct mg_str body)
 {
-	char **list_of_words;
+	string *list_of_words;
 	int	i = -1;
 
 	list_of_words = ft_split(body.ptr, ' ');
@@ -44,11 +44,11 @@ static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 		if (mg_http_match_uri(hm, "/translate"))
 		{
 			printf("Body: %s\n", hm->body.ptr);
-			char **split_body = split_and_trim_body(hm->body);
+			string *split_body = split_and_trim_body(hm->body);
 			t_word_list	*words_list = NULL;
 			create_word_list(split_body, &words_list);
 			parse_words(&words_list);	//api_call
-			char *translation = translate();
+			string translation = translate();
 			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "{\"Translation\": \"%s\"}", translation);
 		}
 		else
@@ -56,7 +56,7 @@ static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 	}
 }
 
-int	main(int argc, char *argv[]) {
+int	main(int argc, string argv[]) {
 	struct mg_mgr mgr;
 
 	mg_mgr_init(&mgr);	// Init manager
