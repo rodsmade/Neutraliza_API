@@ -27,6 +27,7 @@ SRC_FILES = cJSON.c \
 			mongoose.c \
 			services_ext_api_calls.c \
 			services_translation.c \
+			utils_http.c \
 			utils_libft_ft_split.c \
 			utils_libft.c \
 			utils_list.c \

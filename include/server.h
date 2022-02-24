@@ -8,7 +8,7 @@
 # include <stdlib.h>
 # include <bsd/string.h>
 # include <string.h>
-# include <signal.h>
+# include <signal.h> // signal()
 
 // ------------------------------------------------		TYPEDEFS	-----------
 
@@ -24,13 +24,6 @@ enum e_http_method {
 	DELETE
 };
 
-static inline char *http_method_to_string(enum e_http_method method)
-{
-	char *strings[] = {"GET", "POST", "PUT", "PATCH", "DELETE"};
-
-	return (strings[method]);
-}
-
 enum e_http_status {
 	CONTINUE_100,
 	OK_200,
@@ -39,18 +32,6 @@ enum e_http_status {
 	TEAPOT_418,
 	SERVER_ERROR_500
 };
-
-static inline char *http_status_to_string(enum e_http_method method)
-{
-	char *strings[] = {"100_CONTINUE"
-						, "200_OK"
-						, "400_BAD_REQUEST"
-						, "400_NOT_FOUND"
-						, "418_TEAPOT"
-						, "500_SERVER_ERROR"};
-
-	return (strings[method]);
-}
 
 enum e_class {
 	none,
@@ -65,23 +46,6 @@ enum e_class {
 	noun,
 	verb
 };
-
-static inline char *class_to_string(enum e_class class)
-{
-	char *strings[] = {"none"
-						, "adjective"
-						, "adverb"
-						, "article"
-						, "conjunction"
-						, "interjection"
-						, "numeral"
-						, "preposition"
-						, "pronoun"
-						, "noun"
-						, "verb"};
-
-	return (strings[class]);
-}
 
 // ------------------------------------------------		STRUCTS		-----------
 
@@ -114,8 +78,14 @@ typedef struct s_logger
 void		parse_words(t_word_list	**words_list);
 
 // services_translation.c
-void		create_word_list(string *split_body, t_word_list	**words_list);
+void		create_word_list(string *split_body, t_word_list **words_list);
 string		translate(void);
+
+// utils_http.c
+string		class_to_string(enum e_class class);
+string		http_status_to_string(enum e_http_method method);
+string		http_method_to_string(enum e_http_method method);
+int			http_match_method(struct mg_http_message *request, int method);
 
 // utils_libft.c + utils_libft_ft_split.c
 char		*ft_substr(char const *s, unsigned int start, size_t len);
