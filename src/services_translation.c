@@ -1,4 +1,4 @@
-#include "header.h"
+#include "server.h"
 
 void	create_word_list(char **split_body, t_word_list	**words_list)
 {

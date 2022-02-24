@@ -1,4 +1,4 @@
-#include "header.h"
+#include "server.h"
 
 char		*g_landing_page_html;
 

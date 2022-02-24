@@ -1,4 +1,4 @@
-#include "header.h"
+#include "server.h"
 
 static int	count_words(const char *s, char delimiter)
 {

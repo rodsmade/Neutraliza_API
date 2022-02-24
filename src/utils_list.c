@@ -1,4 +1,4 @@
-#include "header.h"
+#include "server.h"
 
 // TEST_OK!
 t_word_list	*ft_lstnew(t_word word)

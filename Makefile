@@ -20,11 +20,14 @@ BINS_PATH = ./bin/
 
 # FILES
 NAME = $(BINS_PATH)server
-HEADERS = mongoose.h header.h
-SRC_FILES = mongoose.c \
+HEADERS = $(INCLUDE_PATH)mongoose.h \
+			$(INCLUDE_PATH)server.h \
+			$(INCLUDE_PATH)cJSON.h
+SRC_FILES = cJSON.c \
+			mongoose.c \
 			services_ext_api_calls.c \
 			services_translation.c \
-			utils_ft_split.c \
+			utils_libft_ft_split.c \
 			utils_libft.c \
 			utils_list.c \
 			main.c
