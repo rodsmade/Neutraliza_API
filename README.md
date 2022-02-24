@@ -3,7 +3,7 @@
 A Neutralize é uma API escrita em C que te ajuda a traduzir sua comunicação para uma linguagem _gênero-neutra_ e _inclusiva_.
 
 ## Como utilizar
-
+---
 A Neutraliza está dando seus primeiros passos, e por isso ainda não é possível acessá-la via web, fazendo-se necessário baixar, compilar e subir o servidor para então poder utilizá-la na porta 4242 da máquina local (localhost:4242).
 
 Passo 1 - baixar este repositório
@@ -30,26 +30,29 @@ http://localhost:4242/home
 Pronto! Agora é só enviar seus textos para serem neutralizados! :)
 
 ## Endpoints:
+---
 - ` GET /` -  raiz. Teste para verificar o status do servidor
 - ` GET /home` - landing page. 
 - ` POST /translate + body` - envie seu texto para ser traduzido!
 
 ## Tech Stack
-Backend:
+---
+### Backend:
 - Mongoose - web server [embedded]
 - cJSON - parsing de json [embedded]
 - libcurl - chamadas a APIs externas [comando instalar + -lcurl na compilação]
 
-Front-end:
+### Front-end:
 - HTML
 - CSS
 - Javascript
 
-Integração:
+### Integração:
 - Dicio-API (link)
 - Banco de dados local (SQL? SQLite?) para buscar substituições inteiras
 
 ## Árvore de diretórios
+---
 * ```bin/``` 
 	Onde se encontram os binários (arquivos executáveis) do servidor (`server`) e da CLI (`neutra`) após a compilação.
 
@@ -57,10 +60,9 @@ Integração:
 	Keeps all the custom-made .h header files used in the project.
 	
 
-
 ## FAQ
-
-### O que é linguagem gênero-neutra?
+---
+### O que é uma linguagem gênero-neutra?
 - É uma linguagem que reconhece a existência de mais gêneros além do masculino e feminino e que não favorece um gênero ao outro.
 
 ### Por que usar linguagem gênero-neutra?

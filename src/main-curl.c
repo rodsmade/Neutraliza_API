@@ -30,6 +30,7 @@
 #include <string.h>
 
 #include <curl/curl.h>
+#include "cJSON.h"
 
 struct MemoryStruct {
 	char *memory;
@@ -73,7 +74,8 @@ int main(void)
 	curl_handle = curl_easy_init();
 
 	/* specify URL to get */
-	curl_easy_setopt(curl_handle, CURLOPT_URL, "https://significado.herokuapp.com/livro");
+	char palavra[] = "manga";
+	curl_easy_setopt(curl_handle, CURLOPT_URL, "https://significado.herokuapp.com/gostoso");
 
 	/* send all data to this function	*/
 	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
@@ -101,7 +103,30 @@ int main(void)
 		 * Do something nice with it!
 		 */
 		printf("data received: >>>%s<<<\n", chunk.memory);
-
+		printf("teste1\n");
+		cJSON *response_json = cJSON_Parse(chunk.memory);
+		printf("teste2\n");
+		if (response_json == NULL)
+		{
+			printf("deu ruim criar o json\n");
+			cJSON_Delete(response_json);
+			return 0;
+		}
+		printf("array size: %d\n", cJSON_GetArraySize(response_json));
+				printf("teste3\n");
+		const cJSON *definition = NULL;
+		printf("teste4\n");
+		definition = cJSON_GetArrayItem(response_json, 0);
+		const cJSON *class_json = NULL;
+		class_json = cJSON_GetObjectItemCaseSensitive(definition, "class");
+		printf("deu bom??? >%s<\n", class_json->valuestring);
+		if (cJSON_IsString(class_json) && (class_json->valuestring != NULL))
+			printf("deu bom! buscou a classe, ela existe\n");
+		printf("teste6\n");
+		if (strncmp(class_json->valuestring, "adjetivo", 8) == 0)
+			printf("Achou adjetivo !!! => %s\n", palavra);
+		else
+			printf("Não achou adjetivo\n");
 		printf("%lu bytes retrieved\n", (unsigned long)chunk.size);
 	}
 

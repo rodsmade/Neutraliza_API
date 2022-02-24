@@ -2,7 +2,7 @@
 # COMPILATION VARIABLES
 CC = gcc
 CFLAGS = -I $(INCLUDE_PATH) $(LIBS) # -Wall -Wextra -Werror
-LIBS = -lbsd
+LIBS = -lbsd -lcurl
 DEBUG = -g
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -q --tool=memcheck
 
