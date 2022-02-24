@@ -28,7 +28,28 @@ static inline char *http_method_to_string(enum e_http_method method)
 {
 	char *strings[] = {"GET", "POST", "PUT", "PATCH", "DELETE"};
 
-	return strings[method];
+	return (strings[method]);
+}
+
+enum e_http_status {
+	CONTINUE_100,
+	OK_200,
+	BAD_REQUEST_400,
+	NOT_FOUND_400,
+	TEAPOT_418,
+	SERVER_ERROR_500
+};
+
+static inline char *http_status_to_string(enum e_http_method method)
+{
+	char *strings[] = {"100_CONTINUE"
+						, "200_OK"
+						, "400_BAD_REQUEST"
+						, "400_NOT_FOUND"
+						, "418_TEAPOT"
+						, "500_SERVER_ERROR"};
+
+	return (strings[method]);
 }
 
 enum e_class {
@@ -47,9 +68,19 @@ enum e_class {
 
 static inline char *class_to_string(enum e_class class)
 {
-	char *strings[] = {"none", "adjective", "adverb", "article", "conjunction", "interjection", "numeral", "preposition", "pronoun", "noun", "verb"};
+	char *strings[] = {"none"
+						, "adjective"
+						, "adverb"
+						, "article"
+						, "conjunction"
+						, "interjection"
+						, "numeral"
+						, "preposition"
+						, "pronoun"
+						, "noun"
+						, "verb"};
 
-	return strings[class];
+	return (strings[class]);
 }
 
 // ------------------------------------------------		STRUCTS		-----------
@@ -100,6 +131,7 @@ void		ft_lstadd_back(t_word_list **lst, t_word_list *new);
 // utils_logger.c
 void		logger_close(t_logger *logger);
 void		logger_error(string	err_msg, t_logger *logger);
+void		logger_info(string	info_msg, t_logger *logger);
 void		logger_init(t_logger *logger);
 void		logger_write(t_logger *logger);
 
