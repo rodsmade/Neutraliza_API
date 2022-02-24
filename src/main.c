@@ -4,7 +4,7 @@ string		g_landing_page_html;
 t_logger	g_logger;
 int			g_EXIT_SIG;
 
-void	catch_sigint(int dummy)
+void	signal_handler(int dummy)
 {
 	(void)dummy;
 	g_EXIT_SIG = 1;
@@ -98,7 +98,8 @@ int	main(int argc, string argv[])
 	}
 
 	// Capture ctrl+c signal so that server is closed properly
-	signal(SIGINT, catch_sigint);
+	signal(SIGINT, signal_handler);
+	signal(SIGTERM, signal_handler);
 
 	printf("Server is up.\n");
 
