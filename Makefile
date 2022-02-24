@@ -30,6 +30,7 @@ SRC_FILES = cJSON.c \
 			utils_libft_ft_split.c \
 			utils_libft.c \
 			utils_list.c \
+			utils_logger.c \
 			main.c
 SOURCES = $(addprefix $(SRC_PATH), $(SRC_FILES))
 OBJ_FILES = $(patsubst %.c, %.o, $(SRC_FILES))
