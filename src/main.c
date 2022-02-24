@@ -4,8 +4,9 @@ string		g_landing_page_html;
 t_logger	g_logger;
 int			g_EXIT_SIG;
 
-void	catch_sigint(void)
+void	catch_sigint(int dummy)
 {
+	(void)dummy;
 	g_EXIT_SIG = 1;
 }
 
@@ -43,63 +44,74 @@ void	load_resources(void)
 	return ;
 }
 
-static void	fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
+static void	handle_http_connection(struct mg_connection *connection, int ev, void *ev_data, void *fn_data)
+{
 	if (ev == MG_EV_HTTP_MSG)
 	{
-		struct mg_http_message *hm = (struct mg_http_message *) ev_data;
-		// printf("\n\n ESMIRILHANDO O mg_http_message:\n");
-	 	// printf("-- method: >>%s<<\n", hm->method.ptr);
-	 	// printf("-- uri: >>%s<<\n", hm->uri.ptr);
-	 	// printf("-- query: >>%s<<\n", hm->query.ptr);
-	 	// printf("-- proto: >>%s<<\n", hm->proto.ptr);
-	 	// printf("-- body: >>%s<<\n", hm->body.ptr);
-	 	// printf("-- head: >>%s<<\n", hm->head.ptr);
-	 	// printf("-- chunk: >>%s<<\n", hm->chunk.ptr);
-	 	// printf("-- message: >>%s<<\n", hm->message.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 0, hm->headers[0].name.ptr, hm->headers[0].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 1, hm->headers[1].name.ptr, hm->headers[1].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 2, hm->headers[2].name.ptr, hm->headers[2].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 3, hm->headers[3].name.ptr, hm->headers[3].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 4, hm->headers[4].name.ptr, hm->headers[4].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 5, hm->headers[5].name.ptr, hm->headers[5].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 6, hm->headers[6].name.ptr, hm->headers[6].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 7, hm->headers[7].name.ptr, hm->headers[7].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 8, hm->headers[8].name.ptr, hm->headers[8].value.ptr);
-		// printf("-- header[%i]: {\"%s\": \"%s\"\n", 9, hm->headers[9].name.ptr, hm->headers[9].value.ptr);
-		if (mg_http_match_uri(hm, "/"))
-			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "{\"api-status\": \"A-OK, Up and Running, WOO-HOO!!!\"}");
-		if (mg_http_match_uri(hm, "/home"))
-			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", g_landing_page_html);
-		if (mg_http_match_uri(hm, "/translate"))
+		struct mg_http_message *request = (struct mg_http_message *) ev_data;
+		if (mg_http_match_uri(request, "/") && http_match_method(request, GET))
+			mg_http_reply(connection
+							, OK_200
+							, "Content-Type: text/html; charset=UTF-8\r\n"
+							, "{\"response\": \"Server Up and Running!!!\"}");
+		else if (mg_http_match_uri(request, "/home") && http_match_method(request, GET))
+			mg_http_reply(connection
+							, OK_200
+							, "Content-Type: text/html; charset=UTF-8\r\n"
+							, g_landing_page_html);
+		else if (mg_http_match_uri(request, "/translate") && http_match_method(request, POST))
 		{
-			printf("Body: %s\n", hm->body.ptr);
-			string *split_body = split_and_trim_body(hm->body);
+			string *split_body = split_and_trim_body(request->body);
 			t_word_list	*words_list = NULL;
 			create_word_list(split_body, &words_list);
 			parse_words(&words_list);	//api_call
 			string translation = translate();
-			mg_http_reply(c, 200, "Content-Type: text/html; charset=UTF-8\r\n", "{\"Translation\": \"%s\"}", translation);
+			mg_http_reply(connection
+							, 200
+							, "Content-Type: text/html; charset=UTF-8\r\n"
+							, "{\"Translation\": \"%s\"}", translation);
 		}
 		else
-			mg_http_reply(c, 400, "Content-Type: text/html; charset=UTF-8\r\n", "Bad bad request ヽ(O`皿'O)ﾉ");
+			mg_http_reply(connection
+							, BAD_REQUEST_400
+							, "Content-Type: text/html; charset=UTF-8\r\n"
+							, "{\"response\": \"Bad request, refer to docs (link - soon!).\"}");
 	}
 }
 
-int	main(int argc, string argv[]) {
+int	main(int argc, string argv[])
+{
 	struct mg_mgr	mgr;
 
-	mg_mgr_init(&mgr);	// Init manager
+	printf("Starting server . . .\n");
+
+	// initialising structures and loading resources
+	mg_mgr_init(&mgr);
 	logger_init(&g_logger);
-	load_resources();	// load resources to memory
-	signal(SIGINT, catch_sigint);
-	if (!mg_http_listen(&mgr, "http://localhost:4242", fn, &mgr))
+	load_resources();
+
+	// Setting up listener (socket)
+	if (!mg_http_listen(&mgr, "http://localhost:4242", handle_http_connection, NULL))
 	{
 		logger_error("Failed to setup listener", &g_logger);
 		return (1);
 	}
+
+	// Capture ctrl+c signal so that server is closed properly
+	signal(SIGINT, catch_sigint);
+
+	printf("Server is up.\n");
+
 	while (!g_EXIT_SIG)
-		mg_mgr_poll(&mgr, 1000);	// Event loop
-	mg_mgr_free(&mgr);	// Cleanup
+		mg_mgr_poll(&mgr, 1000);
+
+	// In the event of server being closed by ctrl+c, closing routine
+	printf("\n");
+	printf("Freeing memory and closing logs fd . . .\n");
+	mg_mgr_free(&mgr);
 	logger_close(&g_logger);
-	return 0;
+
+	printf("Server shut down.\n");
+
+	return (0);
 }
