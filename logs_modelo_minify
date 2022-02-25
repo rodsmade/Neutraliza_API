@@ -1,0 +1,4 @@
+[{"log-type":"[REQUEST]","log":[{"transaction_id":"65354","timestamp":"asdjdhaksjdh","body":"conteúdo do body","method":"POST","protocol":"HTTP","query":"","uri":"/translate","headers":[{"header1":"valor1"},{"header1":"valor1"},{"header1":"valor1"},{"header1":"valor1"}]}]}]
+[{"log-type":"[ERROR]","log":["Mensagem de Erro"]}]
+[{"log-type":"[INFO]","log":["Mensagem de Info"]}]
+[{"log-type":"[RESPONSE]","log":[{"status_code":"200","response_headers":[{"header1":"value1"},{"header2":"value2"}],"response_body":"hfdskfhaskjdhgfskhdgjf","original_request":[{"transaction_id":"65354","timestamp":"asdjdhaksjdh","body":"conteúdo do body","method":"PUT","protocol":"HTTP","query":"","uri":"/translate","headers":[{"header1":"valor1"},{"header1":"valor1"},{"header1":"valor1"},{"header1":"valor1"}]}]}]}]
