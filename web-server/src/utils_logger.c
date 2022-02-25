@@ -2,7 +2,7 @@
 
 void	logger_init(t_logger *logger)
 {
-	FILE	*log_file = fopen("./logs.txt", "a");
+	FILE	*log_file = fopen("../logs/logs.txt", "a");
 
 	logger->fd = log_file->_fileno;
 	logger->transaction_id = 0;
