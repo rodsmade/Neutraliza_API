@@ -4,15 +4,17 @@
 // ------------------------------------------------		INCLUDES	-----------
 
 # include "mongoose.h"
+# include "cJSON.h"
 # include <stdio.h> // fopen(), fread(), fprintf()
 # include <stdlib.h>
 # include <bsd/string.h>
-# include <string.h>
+# include <string.h> // strdup(), strndup(), strncmp()
 # include <signal.h> // signal()
 
 // ------------------------------------------------		TYPEDEFS	-----------
 
 typedef char *string;
+typedef unsigned long int ulint;
 
 // ------------------------------------------------		ENUMS		-----------
 
@@ -64,13 +66,14 @@ typedef	struct s_word_list
 typedef struct s_logger
 {
 	int		fd;
+	ulint	transaction_id;
 	string	timestamp;
-	string	method;
-	string	uri;
-	string	query;
-	string	protocol;
 	string	body;
-	string	*headers;
+	string	method;
+	string	protocol;
+	string	query;
+	string	uri;
+	string	headers[MG_MAX_HTTP_HEADERS];
 }			t_logger;
 
 // ------------------------------------------------		PROTOTYPES	-----------
@@ -103,6 +106,9 @@ void		logger_close(t_logger *logger);
 void		logger_error(string	err_msg, t_logger *logger);
 void		logger_info(string	info_msg, t_logger *logger);
 void		logger_init(t_logger *logger);
-void		logger_write(t_logger *logger);
+void		logger_log_request(struct mg_http_message *request, t_logger *logger);
+// TODO: alterar depois:
+void		logger_log_response(t_logger *logger);
+
 
 #endif

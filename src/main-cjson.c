@@ -107,6 +107,35 @@ end:
 
 void main()
 {
-	printf("%s\n", create_monitor_with_helpers());
+	cJSON *log_JSON	= cJSON_CreateArray();
+	cJSON *log_obj_JSON = cJSON_CreateObject();
+	cJSON_AddItemToArray(log_JSON, log_obj_JSON);
+	cJSON_AddStringToObject(log_obj_JSON, "log-type", "[RESPONSE]");
+
+	cJSON *log_arr_JSON = cJSON_AddArrayToObject(log_obj_JSON, "log");
+
+	cJSON *log_obj = cJSON_CreateObject();
+	cJSON_AddItemToArray(log_arr_JSON, log_obj);
+
+	cJSON_AddStringToObject(log_obj, "transaction_id", "4729847");
+	cJSON_AddStringToObject(log_obj, "status_code", "200");
+	cJSON_AddStringToObject(log_obj, "response_body", "body");
+
+	cJSON *response_headers_arr = cJSON_CreateArray();
+	cJSON_AddItemToObject(log_obj, "response_headers", response_headers_arr);
+	
+	// monta headers da resposta
+	cJSON *header_1_obj_JSON = cJSON_CreateObject();
+	cJSON_AddStringToObject(header_1_obj_JSON, "header1", "value1");
+	cJSON_AddItemToArray(response_headers_arr, header_1_obj_JSON);
+	cJSON *header_2_obj_JSON = cJSON_CreateObject();
+	cJSON_AddStringToObject(header_2_obj_JSON, "header2", "value2");
+	cJSON_AddItemToArray(response_headers_arr, header_2_obj_JSON);
+
+
+	printf("teste: %s\n\n", cJSON_Print(log_JSON));
+	printf("teste unformatted: %s\n\n", cJSON_PrintUnformatted(log_JSON));
+	
+
 	return ;
 }

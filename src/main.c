@@ -24,7 +24,7 @@ string	*split_and_trim_body(struct mg_str body)
 	return (list_of_words);
 }
 
-void	load_resources(void)
+int	load_resources(void)
 {
 	long	length;
 	FILE	*file = fopen ("resources/landing-page.html", "rb");
@@ -34,14 +34,15 @@ void	load_resources(void)
 		fseek(file, 0, SEEK_END);
 		length = ftell (file);
 		fseek(file, 0, SEEK_SET);
-		g_landing_page_html = malloc(length);	// lembrar de dar free
+		g_landing_page_html = malloc(length * sizeof(char));
 		if (g_landing_page_html)
-			fread (g_landing_page_html, 1, length, file);
+			fread(g_landing_page_html, 1, length, file);
 		fclose(file);
+		return (1);
 	}
 	else
-		logger_error("Failed to open html", &g_logger);
-	return ;
+		printf("Failed to open html\n");
+	return (0);
 }
 
 static void	handle_http_connection(struct mg_connection *connection, int ev, void *ev_data, void *fn_data)
@@ -49,6 +50,8 @@ static void	handle_http_connection(struct mg_connection *connection, int ev, voi
 	if (ev == MG_EV_HTTP_MSG)
 	{
 		struct mg_http_message *request = (struct mg_http_message *) ev_data;
+		g_logger.transaction_id++;
+
 		if (mg_http_match_uri(request, "/") && http_match_method(request, GET))
 			mg_http_reply(connection
 							, OK_200
@@ -67,9 +70,10 @@ static void	handle_http_connection(struct mg_connection *connection, int ev, voi
 			parse_words(&words_list);	//api_call
 			string translation = translate();
 			mg_http_reply(connection
-							, 200
+							, OK_200
 							, "Content-Type: text/html; charset=UTF-8\r\n"
 							, "{\"Translation\": \"%s\"}", translation);
+			logger_log_response(&g_logger);
 		}
 		else
 			mg_http_reply(connection
@@ -88,7 +92,12 @@ int	main(int argc, string argv[])
 	// initialising structures and loading resources
 	mg_mgr_init(&mgr);
 	logger_init(&g_logger);
-	load_resources();
+	printf("Initialised structures.\n");
+
+	if (load_resources())
+		printf("Loaded resources.\n");
+	else
+		logger_error("Failed to load resources", &g_logger);
 
 	// Setting up listener (socket)
 	if (!mg_http_listen(&mgr, "http://localhost:4242", handle_http_connection, NULL))
