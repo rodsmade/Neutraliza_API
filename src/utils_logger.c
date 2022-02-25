@@ -2,17 +2,11 @@
 
 void	logger_init(t_logger *logger)
 {
-	FILE	*log_file = fopen("./logs", "a");
+	FILE	*log_file = fopen("./logs.txt", "a");
 
 	logger->fd = log_file->_fileno;
 	logger->transaction_id = 0;
 	logger->timestamp = NULL;
-	logger->method = NULL;
-	logger->uri = NULL;
-	logger->query = NULL;
-	logger->protocol = NULL;
-	logger->body = NULL;
-	// logger->headers = NULL;
 	return ;
 }
 
@@ -20,23 +14,10 @@ void	logger_free_all(t_logger *logger)
 {
 	if (logger->timestamp)
 		free(logger->timestamp);
-	if (logger->method)
-		free(logger->method);
-	if (logger->uri)
-		free(logger->uri);
-	if (logger->query)
-		free(logger->query);
-	if (logger->protocol)
-		free(logger->protocol);
-	if (logger->body)
-		free(logger->body);
-	// loop pelos headers
-	// if (logger->headers)
-	// 	free(logger->headers);
 	return ;
 }
 
-static string get_time (void)
+static string get_time(void)
 {
   time_t rawtime;
   struct tm * timeinfo;
@@ -46,66 +27,81 @@ static string get_time (void)
   return (asctime(timeinfo));
 }
 
-void	logger_log_request(struct mg_http_message *request, t_logger *logger)
+/**
+ * In order for this function to work properly with NO LEAKS, original_str
+ * HAS to be malloced initially. It WILL be freed. So it's reasonable to call
+ * my_string = append_string(my_string, "something");
+**/
+string	append_string(string original_str, const char *appendage, size_t n)
 {
+	string	new_str;
+	int	orig_len = 0;
+	int	i;
+
+	orig_len = strlen(original_str);
+	new_str = realloc(original_str, (orig_len + n + 1) * sizeof(char));
+	new_str[orig_len + n] = '\0';
+	i = -1;
+	while (++i < n)
+		new_str[orig_len + i] = appendage[i];
+	return (new_str);
+}
+
+static string get_headers(struct mg_http_message *request)
+{
+	string	headers_to_string = strdup("");
+	int		i = -1;
+
+	while (request->headers[++i].name.ptr)
+	// {"header1":"value1"},{"header2":"value2"},...,{"headerN":"valueN"}
+	{
+		headers_to_string = append_string(headers_to_string, "{\"", 2);
+		headers_to_string = append_string(headers_to_string
+											, request->headers[i].name.ptr
+											, request->headers[i].name.len);
+		headers_to_string = append_string(headers_to_string, "\":\"", 3);
+		headers_to_string = append_string(headers_to_string
+											, request->headers[i].value.ptr
+											, request->headers[i].value.len);
+		headers_to_string = append_string(headers_to_string, "\"}", 4);
+		if (request->headers[i + 1].name.ptr)
+			headers_to_string = append_string(headers_to_string, ",", 1);
+	}	
+	return (headers_to_string);
+}
+
+void	logger_new_request(struct mg_http_message *request, t_logger *logger)
+{
+	string	headers;
+	string	timestamp;
+
+	logger->transaction_id++;
 	logger->timestamp = get_time();
-	logger->body = strndup(request->body.ptr, request->body.len);
-	logger->method = strndup(request->method.ptr, request->method.len);
-	logger->protocol = strndup(request->proto.ptr, request->proto.len);
-	logger->query = strndup(request->query.ptr, request->query.len);
-	logger->uri = strndup(request->uri.ptr, request->uri.len);
-	int	i = -1;	
-
+	headers = get_headers(request);
+	timestamp = ft_strtrim(get_time(), "\n");
+	dprintf(logger->fd
+			, "[{\"log-type\":\"[REQUEST]\",\"log\":[{\"transaction_id\":%ld,\"timestamp\":\"%s\",\"body\":\"%.*s\",\"method\":\"%.*s\",\"protocol\":\"%.*s\",\"query\":\"%.*s\",\"uri\":\"%.*s\",\"headers\":[%s]}]}]\n"
+			, logger->transaction_id
+			, timestamp
+			, (int) request->body.len, request->body.ptr
+			, (int) request->method.len, request->method.ptr
+			, (int) request->proto.len, request->proto.ptr
+			, (int) request->query.len, request->query.ptr
+			, (int) request->uri.len, request->uri.ptr
+			, headers);
+	free(headers);
+	free(timestamp);
 	return ;
 }
 
-// void	logger_log_response(int status_code, string headers, string body, t_logger *logger)
-void	logger_log_response(t_logger *logger)
-{
-	// monta o JSON
-	cJSON *log_JSON	= cJSON_CreateArray();
-	cJSON *log_obj_JSON = cJSON_CreateObject();
-	cJSON_AddItemToArray(log_JSON, log_obj_JSON);
-	cJSON_AddStringToObject(log_obj_JSON, "log-type", "[RESPONSE]");
-
-	cJSON *log_arr_JSON = cJSON_AddArrayToObject(log_obj_JSON, "log");
-
-	cJSON *log_obj = cJSON_CreateObject();
-	cJSON_AddItemToArray(log_arr_JSON, log_obj);
-
-	cJSON_AddStringToObject(log_obj, "transaction_id", "4729847");
-	cJSON_AddStringToObject(log_obj, "status_code", "200");
-	cJSON_AddStringToObject(log_obj, "response_body", "body");
-
-	cJSON *response_headers_arr = cJSON_CreateArray();
-	cJSON_AddItemToObject(log_obj, "response_headers", response_headers_arr);
-	
-	// monta headers da resposta
-	cJSON *header_1_obj_JSON = cJSON_CreateObject();
-	cJSON_AddStringToObject(header_1_obj_JSON, "header1", "value1");
-	cJSON_AddItemToArray(response_headers_arr, header_1_obj_JSON);
-	cJSON *header_2_obj_JSON = cJSON_CreateObject();
-	cJSON_AddStringToObject(header_2_obj_JSON, "header2", "value2");
-	cJSON_AddItemToArray(response_headers_arr, header_2_obj_JSON);
-
-	dprintf(logger->fd, "%s\n", cJSON_PrintUnformatted(log_JSON));
-	return ;
-}
-
-string	logger_request_JSON_to_string(t_logger *logger)
-{
-	string	request_JSON_to_string;
-
-	// monta as parada doida
-
-	return (request_JSON_to_string);
-}
-
-void	logger_write_request_log(t_logger *logger)
+void	logger_log_response(int status_code, string headers, string body, t_logger *logger)
 {
 	dprintf(logger->fd
-			, "[{\"log-type\": \"[REQUEST]\",\"log\":%s}]"
-			, logger_request_JSON_to_string(logger));
+			, "[{\"log-type\":\"[RESPONSE]\",\"log\":[{\"transaction_id\":%ld,\"status_code\":\"%s\",\"response_body\":[%s],\"response_headers\":[%s]}]}]\n"
+			, logger->transaction_id
+			, http_status_to_string(status_code)
+			, body
+			, headers);
 	return ;
 }
 

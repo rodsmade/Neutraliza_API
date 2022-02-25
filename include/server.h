@@ -68,12 +68,6 @@ typedef struct s_logger
 	int		fd;
 	ulint	transaction_id;
 	string	timestamp;
-	string	body;
-	string	method;
-	string	protocol;
-	string	query;
-	string	uri;
-	string	headers[MG_MAX_HTTP_HEADERS];
 }			t_logger;
 
 // ------------------------------------------------		PROTOTYPES	-----------
@@ -106,9 +100,9 @@ void		logger_close(t_logger *logger);
 void		logger_error(string	err_msg, t_logger *logger);
 void		logger_info(string	info_msg, t_logger *logger);
 void		logger_init(t_logger *logger);
-void		logger_log_request(struct mg_http_message *request, t_logger *logger);
-// TODO: alterar depois:
-void		logger_log_response(t_logger *logger);
+void		logger_new_request(struct mg_http_message *request, t_logger *logger);
+string		append_string(string original_str, const char *appendage, size_t n);
+void		logger_log_response(int status_code, string headers, string body, t_logger *logger);
 
 
 #endif

@@ -50,18 +50,32 @@ static void	handle_http_connection(struct mg_connection *connection, int ev, voi
 	if (ev == MG_EV_HTTP_MSG)
 	{
 		struct mg_http_message *request = (struct mg_http_message *) ev_data;
-		g_logger.transaction_id++;
+		logger_new_request(request, &g_logger);
 
 		if (mg_http_match_uri(request, "/") && http_match_method(request, GET))
+		{
+			string response_body = "{\"response\": \"Server Up and Running!!!\"}";
 			mg_http_reply(connection
 							, OK_200
 							, "Content-Type: text/html; charset=UTF-8\r\n"
-							, "{\"response\": \"Server Up and Running!!!\"}");
+							, response_body);
+			logger_log_response(OK_200
+								, "{\"Content-Type\":\"text/html; charset=UTF-8\"}"
+								, response_body
+								, &g_logger);
+		}
 		else if (mg_http_match_uri(request, "/home") && http_match_method(request, GET))
+		{
+			string response_body = "{\"response\": \"landing-page.html\"}";
 			mg_http_reply(connection
 							, OK_200
 							, "Content-Type: text/html; charset=UTF-8\r\n"
 							, g_landing_page_html);
+			logger_log_response(OK_200
+								, "{\"Content-Type\":\"text/html; charset=UTF-8\"}"
+								, response_body
+								, &g_logger);
+		}
 		else if (mg_http_match_uri(request, "/translate") && http_match_method(request, POST))
 		{
 			string *split_body = split_and_trim_body(request->body);
@@ -69,17 +83,30 @@ static void	handle_http_connection(struct mg_connection *connection, int ev, voi
 			create_word_list(split_body, &words_list);
 			parse_words(&words_list);	//api_call
 			string translation = translate();
+			string translation_json = strdup("{\"translation\":\"");
+			translation_json = append_string(translation_json, translation, strlen(translation));
+			translation_json = append_string(translation_json, "\"}", 2);
 			mg_http_reply(connection
 							, OK_200
 							, "Content-Type: text/html; charset=UTF-8\r\n"
 							, "{\"Translation\": \"%s\"}", translation);
-			logger_log_response(&g_logger);
+			logger_log_response(OK_200
+								, "{\"Content-Type\":\"text/html; charset=UTF-8\"}"
+								, translation_json
+								, &g_logger);
 		}
 		else
+		{
+			string response_body = "{\"response\": \"Bad request, refer to docs (link - soon!).\"}";
 			mg_http_reply(connection
 							, BAD_REQUEST_400
 							, "Content-Type: text/html; charset=UTF-8\r\n"
-							, "{\"response\": \"Bad request, refer to docs (link - soon!).\"}");
+							, response_body);
+			logger_log_response(BAD_REQUEST_400
+								, "{\"Content-Type\":\"text/html; charset=UTF-8\"}"
+								, response_body
+								, &g_logger);
+		}
 	}
 }
 
