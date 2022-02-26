@@ -1,16 +1,5 @@
 #include "neutraliza-cli.h"
 
-char		*get_next_line(int fd);
-static void	*free_n_null(char **s1, char **s2, char **s3);
-static char	*copy_up_to_nl(char *string);
-static char	*save_past_first_nl(char *source);
-static char	*return_line(char **rest, char **buffer, char **line, int i);
-size_t		ft_strlen(const char *s);
-char		*ft_strdup(const char *s);
-char		*ft_strjoin(char const *s1, char const *s2);
-size_t		ft_strlcpy(char *dst, const char *src, size_t size);
-int			contains_nl(char *string);
-
 char	*get_next_line(int fd)
 /**
  *	This function reads from a file descriptor and returns one line read

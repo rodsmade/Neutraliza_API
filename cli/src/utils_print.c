@@ -71,15 +71,13 @@ void	display_dashboard(void)
 		uri_json = append_n_strs(uri_json, 3, "\"uri\":\"", endpoints[i].uri, "\"");
 		method_json = strdup("");
 		method_json = append_n_strs(method_json, 3, "\"method\":\"", endpoints[i].method, "\"");
-		// APPEND STRINGS WORKS WONDERS I LOVE.
-		printf("testing\n");
-		// endpoints[i].tot_reqs = count_logs("\"log-type\":\"[REQUEST]\""
-		// 				, uri_json
-		// 				, method_json);
-		endpoints[i].tot_reqs = 10;
+		endpoints[i].tot_reqs = count_logs("\"log-type\":\"[REQUEST]\""
+						, uri_json
+						, method_json);
 		free(uri_json);
 		free(method_json);
 	}
+
 	// print dashboard
 	print_header_dashboard();
 	printl_dash();
@@ -94,14 +92,10 @@ void	display_dashboard(void)
 	printl_dash();
 	printf("| Server Total:                                       .\n");
 	printl_dash();
-	// printf("- Total requests\t:\t%d\n", count_logs("\"log-type\":\"[REQUEST]\""));
-	printf("- Total requests\t:\t%d\n", 15);
-	// printf("- Bad requests\t\t:\t%d\n", count_logs("\"log-type\":\"[RESPONSE]\"", "\"status_code\":\"400_BAD_REQUEST\""));
-	printf("- Bad requests\t\t:\t%d\n", 20);
-	// printf("- Errors\t\t:\t%d\n", count_logs("\"log-type\":\"[ERROR]\""));
-	printf("- Errors\t\t:\t%d\n", 25);
-	// printf("- Info\t\t\t:\t%d\n", count_logs("\"log-type\":\"[INFO]\""));
-	printf("- Info\t\t\t:\t%d\n", 30);
+	printf("- Total requests\t:\t%d\n", count_logs("\"log-type\":\"[REQUEST]\"", NULL, NULL));
+	printf("- Bad requests\t\t:\t%d\n", count_logs("\"log-type\":\"[RESPONSE]\"", "\"status_code\":\"400_BAD_REQUEST\"", NULL));
+	printf("- Errors\t\t:\t%d\n", count_logs("\"log-type\":\"[ERROR]\"", NULL, NULL));
+	printf("- Info\t\t\t:\t%d\n", count_logs("\"log-type\":\"[INFO]\"", NULL, NULL));
 	printl_dash();
 	printl_dot();
 	printl_dot_dash();

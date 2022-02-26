@@ -55,9 +55,11 @@ void		init_flags(t_exec_flags *exec_flags);
 
 // utils_libft.c
 char		*ft_strchr(const char *s, int c);
+void		ft_free_arr(void ***arr);
+void		ft_free_ptr(void **ptr);
 
-// utils_libft.c
-int 		count_logs(const char *log_type, ...);
+// utils_log_search.c
+int count_logs(char *log_type, char *uri, char *method);
 
 // utils_parsing.c
 void		capture_flags(int argc, char *argv[], t_exec_flags *exec_flags);

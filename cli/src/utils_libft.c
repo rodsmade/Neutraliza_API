@@ -122,3 +122,25 @@ int	contains_nl(char *string)
 	}
 	return (-1);
 }
+
+void	ft_free_arr(void ***arr)
+{
+	int	i;
+
+	i = -1;
+	while ((*arr)[++i])
+	{
+		free((*arr)[i]);
+		(*arr)[i] = NULL;
+	}
+	free(*arr);
+}
+
+void	ft_free_ptr(void **ptr)
+{
+	if (*ptr)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+}
