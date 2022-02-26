@@ -64,7 +64,7 @@ static void	handle_http_connection(struct mg_connection *connection, int ev, voi
 								, response_body
 								, &g_logger);
 		}
-		else if (mg_http_match_uri(request, "/home") && http_match_method(request, GET))
+		else if (mg_http_match_uri(request, "/v1.0/home") && http_match_method(request, GET))
 		{
 			string response_body = "{\"response\": \"landing-page.html\"}";
 			mg_http_reply(connection
@@ -76,7 +76,7 @@ static void	handle_http_connection(struct mg_connection *connection, int ev, voi
 								, response_body
 								, &g_logger);
 		}
-		else if (mg_http_match_uri(request, "/translate") && http_match_method(request, POST))
+		else if (mg_http_match_uri(request, "/v1.0/translation") && http_match_method(request, POST))
 		{
 			string *split_body = split_and_trim_body(request->body);
 			t_word_list	*words_list = NULL;
