@@ -20,6 +20,10 @@ BIN_PATH = ./bin/
 NAME = $(BIN_PATH)neutre
 HEADERS = $(INCLUDE_PATH)neutraliza-cli.h
 SRC_FILES = neutraliza-cli.c \
+			utils_exec.c \
+			utils_init.c \
+			utils_libft.c \
+			utils_parsing.c \
 			utils_print.c
 SOURCES = $(addprefix $(SRC_PATH), $(SRC_FILES))
 OBJ_FILES = $(patsubst %.c, %.o, $(SRC_FILES))
