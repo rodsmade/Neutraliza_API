@@ -18,7 +18,7 @@ BIN_PATH = ./bin/
 
 # FILES
 NAME = $(BIN_PATH)neutre
-HEADERS = $(INCLUDE_PATH)neutraliza-cli.h $(INCLUDE_PATH)get_next_line.h
+HEADERS = $(INCLUDE_PATH)neutraliza-cli.h
 SRC_FILES = neutraliza-cli.c \
 			utils_exec.c \
 			utils_get_next_line.c \
@@ -43,7 +43,7 @@ $(NAME): $(OBJECTS)
 	@$(CC) -o $(NAME) $(OBJECTS)
 
 # -> creates object files
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADERS)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # SANITIZE
