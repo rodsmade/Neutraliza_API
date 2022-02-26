@@ -78,6 +78,8 @@ void		parse_words(t_word_list	**words_list);
 void		create_word_list(string *split_body, t_word_list **words_list);
 string		translate(void);
 
+// utils_art.c
+void		print_grand_opener(void);
 // utils_http.c
 string		class_to_string(enum e_class class);
 string		http_status_to_string(enum e_http_method method);

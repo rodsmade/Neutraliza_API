@@ -138,6 +138,7 @@ int	main(int argc, string argv[])
 	signal(SIGTERM, signal_handler);
 
 	printf("Server is up.\n");
+	print_grand_opener();
 
 	while (!g_EXIT_SIG)
 		mg_mgr_poll(&mgr, 1000);
