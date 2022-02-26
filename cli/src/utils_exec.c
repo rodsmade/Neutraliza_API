@@ -3,9 +3,7 @@
 void	execute_cmd(t_exec_flags *exec_flags)
 {
 	if (exec_flags->opt_d)
-	{
 		display_dashboard();
-	}
 	else if (exec_flags->opt_h)
 		print_help_menu();
 	else if (exec_flags->opt_a) 

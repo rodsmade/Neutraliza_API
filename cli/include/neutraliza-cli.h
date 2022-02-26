@@ -1,37 +1,11 @@
 #ifndef HEADER_H
 # define HEADER_H
 
+// ------------------------------------------------		INCLUDES	-----------
+
 # include <stdio.h>		// dprintf()
 # include <stdlib.h>	// error()
 # include <string.h>	// strcmp()
-
-/**
- * @brief Cheatsheet:
- * 		neutre [LOG_TYPE] [FORMAT]
- * 		neutre [OPTION]
- * 
- * 	[OPTIONS]
- * 		--dashboard, -d, (no option):
- * 				print comprehensive dashboard (all endpoints and methods) -- DEFAULT
- * 		--help, -h:
- * 				print this help page
- * 		--all, -a:
- * 				list all logs -- DEFAULT
- * 	[LOG_TYPE]
- * 		--get, -g:
- * 				list all logs of GET requests
- * 		--post, -p:
- * 				list all logs of POST requests
- * 		--info, -i:
- * 				list all logs of INFO messages
- * 		--error, -e:
- * 			list all logs of ERROR messages
- * 	[FORMAT]
- * 		--mini, -m:
- * 			display logs in minified version (one log per line) -- DEFAULT
- * 		--beauty, -b:
- * 			display logs °º¤ø,¸¸,ø¤º°`°º¤ø, b e a u t i f u l l y ,ø¤°º¤ø,¸¸,ø¤º° (JSON expanded)
- */
 
 // ------------------------------------------------		TYPEDEFS	-----------
 
