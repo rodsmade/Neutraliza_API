@@ -17,7 +17,7 @@ typedef struct s_exec_flags
 {
 	int	opt_d;	// default = 0;		display dashboard;
 	int	opt_h;	// default = 0;		display help msg;
-	int	opt_a;	// default = 0;		log type: all;
+	int	opt_l;	// default = 0;		list logs (all by default);
 	int	type_a;	// default = 0;		log type: all;
 	int	type_g;	// default = 0;		log type: GET;
 	int	type_p;	// default = 0;		log type: POST;

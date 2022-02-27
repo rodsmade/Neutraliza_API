@@ -4,7 +4,7 @@ void	init_flags(t_exec_flags *exec_flags)
 {
 	exec_flags->opt_d = 0;
 	exec_flags->opt_h = 0;
-	exec_flags->opt_a = 0;
+	exec_flags->opt_l = 0;
 	exec_flags->type_a = 0;
 	exec_flags->type_g = 0;
 	exec_flags->type_p = 0;
