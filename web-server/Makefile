@@ -1,6 +1,6 @@
 
 # COMPILATION VARIABLES
-CC = gcc
+CC = gcc -Wall -Werror -Wextra
 CFLAGS = -I $(INCLUDE_PATH) $(LIBS) # -Wall -Wextra -Werror
 LIBS = -lbsd -lcurl
 DEBUG = -g
@@ -26,6 +26,8 @@ HEADERS = $(INCLUDE_PATH)mongoose.h \
 SRC_FILES = cJSON.c \
 			mongoose.c \
 			services_ext_api_calls.c \
+			services_load_resource.c \
+			services_routing.c \
 			services_translation.c \
 			utils_art.c \
 			utils_http.c \
@@ -60,3 +62,7 @@ clean:
 # -> deletes .o files + static library file + executable; also runs libft's fclean target
 fclean: clean
 	@$(RM) $(NAME)
+
+re: fclean all
+
+.PHONY:	all make_dir clean fclean re
