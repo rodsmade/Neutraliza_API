@@ -36,7 +36,7 @@ char	*ext_api_call_dictionary(char *word)
 	curl_handle = curl_easy_init();
 
 	/* specify URL to get */
-	char *url = ft_append_str_va(strdup("https://significado.herokuapp.com/"), 1, word);
+	char *url = ft_append_string_va(strdup("https://significado.herokuapp.com/"), 1, word);
 	curl_easy_setopt(curl_handle, CURLOPT_URL, url);
 
 	/* send all data to this function	*/

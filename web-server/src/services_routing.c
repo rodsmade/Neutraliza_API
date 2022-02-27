@@ -29,8 +29,8 @@ void	route_request_to_endpoint(struct mg_connection *connection, struct mg_http_
 	}
 	else if (mg_http_match_uri(request, "/v1.0/translation") && http_match_method(request, POST))
 	{
-		string translation = translate(request->body.ptr);
-		string translation_json = ft_append_str_va(strdup("{\"translation\":\""), 2, translation, "\"}");
+		string translation = translation_service(request->body.ptr);
+		string translation_json = ft_append_string_va(strdup("{\"translation\":\""), 2, translation, "\"}");
 		mg_http_reply(connection
 						, http_status_to_int(OK_200)
 						, RESPONSE_HEADER

@@ -20,7 +20,7 @@ string	load_resource(string resource_path)
 	else
 	{
 		char *log = strdup("");
-		log = append_string("Failed to load resource ", resource_path, strlen(resource_path));
+		log = ft_append_string("Failed to load resource ", resource_path, strlen(resource_path));
 		logger_error(log);
 		free(log);
 	}

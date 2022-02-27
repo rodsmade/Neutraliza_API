@@ -35,17 +35,17 @@ static string get_headers(struct mg_http_message *request)
 	while (request->headers[++i].name.ptr)
 	// {"header1":"value1"},{"header2":"value2"},...,{"headerN":"valueN"}
 	{
-		headers_to_string = append_string(headers_to_string, "{\"", 2);
-		headers_to_string = append_string(headers_to_string
+		headers_to_string = ft_append_string(headers_to_string, "{\"", 2);
+		headers_to_string = ft_append_string(headers_to_string
 											, request->headers[i].name.ptr
 											, request->headers[i].name.len);
-		headers_to_string = append_string(headers_to_string, "\":\"", 3);
-		headers_to_string = append_string(headers_to_string
+		headers_to_string = ft_append_string(headers_to_string, "\":\"", 3);
+		headers_to_string = ft_append_string(headers_to_string
 											, request->headers[i].value.ptr
 											, request->headers[i].value.len);
-		headers_to_string = append_string(headers_to_string, "\"}", 4);
+		headers_to_string = ft_append_string(headers_to_string, "\"}", 4);
 		if (request->headers[i + 1].name.ptr)
-			headers_to_string = append_string(headers_to_string, ",", 1);
+			headers_to_string = ft_append_string(headers_to_string, ",", 1);
 	}	
 	return (headers_to_string);
 }

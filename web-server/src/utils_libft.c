@@ -63,9 +63,9 @@ void	ft_free_ptr(void **ptr)
 /**
  * In order for this function to work properly with NO LEAKS, original_str
  * HAS to be malloced initially. It WILL be freed. So it's reasonable to call
- * my_string = append_string(my_string, "something");
+ * my_string = ft_append_string(strdup("Hello "), "world!", 6);
 **/
-string	append_string(string original_str, const char *appendage, size_t n)
+string	ft_append_string(string original_str, const char *appendage, size_t n)
 {
 	string	new_str;
 	int		orig_len = 0;
@@ -83,10 +83,9 @@ string	append_string(string original_str, const char *appendage, size_t n)
 /**
  * In order for this function to work properly with NO LEAKS, body HAS TO BE
  * malloced previously. It WILL be freed. So it's reasonable to call:
- * char	*my_string = strdup("");
- * my_string = append_string(my_string, 2, "some", "string");
+ * myStr = ft_append_string(strdup("Here's "), 3, "some ", "other ", "strings");
 **/
-char	*ft_append_str_va(char* body, int count_append, char *appendage, ...)
+char	*ft_append_string_va(char* body, int count_append, char *appendage, ...)
 {
 	va_list	args;
 	char	*arg;

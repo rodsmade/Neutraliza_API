@@ -19,7 +19,7 @@ static int	look_up_class(char *word)
 	// me dá a quantidade de retorno de itens da entrada!
 	if (cJSON_GetArraySize(response_json) == 0)
 	{
-		char *info_log = ft_append_str_va(strdup("No definitions found for word: "), 1, word);
+		char *info_log = ft_append_string_va(strdup("No definitions found for word: "), 1, word);
 		logger_info(info_log);
 		ft_free_ptr((void *)&info_log);
 		cJSON_Delete(response_json);
