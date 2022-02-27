@@ -1,10 +1,14 @@
 # Neutraliza
 
-A Neutralize é uma API escrita em C que te ajuda a traduzir sua comunicação para uma linguagem _gênero-neutra_ e _inclusiva_.
+A Neutraliza é uma API escrita em C que te ajuda a traduzir sua comunicação para uma linguagem **_não-binária_**, **_gênero-neutra_** e **_inclusiva_**.
 
-## Como utilizar
+Palavras importam. E palavras constroem mundo. Se a língua é viva, então temos em mãos todos os dias a possibilidade de construir uma língua que abarca a existência de todes.
+
+A Neutraliza surge então como um esforço objetivo em direção a construir um mundo novo, mais inclusivo e receptivo da pluralidade de existências. Vamos juntes construir esse mundo, começando pelas palavras :)
+
+## Como rodar a neutraliza localmente
 ---
-A Neutraliza está dando seus primeiros passos, e por isso ainda não é possível acessá-la via web, fazendo-se necessário baixar, compilar e subir o servidor para então poder utilizá-la na porta 4242 da máquina local (localhost:4242).
+A Neutraliza está dando seus primeiros passos, e por isso ainda não é possível acessá-la via web, fazendo-se necessário baixar, compilar e subir o servidor para então poder utilizá-la na porta 4242 da máquina local (`localhost:4242`).
 
 Passo 1 - baixar este repositório
 ``` bash
@@ -13,7 +17,7 @@ git clone https://github.com/42sp/42labs-selection-process-v2-rodsmade.git Neutr
 
 Passo 2 - compilar o servidor
 ``` bash
-cd Neutraliza
+cd Neutraliza/web-server
 make
 ```
 
@@ -29,7 +33,7 @@ http://localhost:4242/home
 
 Pronto! Agora é só enviar seus textos para serem neutralizados! :)
 
-## Endpoints:
+## Endpoints
 ---
 - ` GET /` -  raiz. Teste para verificar o status do servidor
 - ` GET /home` - landing page. 
@@ -40,7 +44,7 @@ Pronto! Agora é só enviar seus textos para serem neutralizados! :)
 ### Backend:
 - Mongoose - web server [embedded]
 - cJSON - parsing de json [embedded]
-- libcurl - chamadas a APIs externas [comando instalar + -lcurl na compilação]
+- libcurl - chamadas a APIs externas [`apt-get install libcurl4-gnutls-dev` + -lcurl na compilação]
 
 ### Front-end:
 - HTML
@@ -48,17 +52,21 @@ Pronto! Agora é só enviar seus textos para serem neutralizados! :)
 - Javascript
 
 ### Integração:
-- Dicio-API (link)
-- Banco de dados local (SQL? SQLite?) para buscar substituições inteiras
+- [Dicio-API](https://github.com/ThiagoNelsi/dicio-api/link) por ThiagoNelsi no Github.
+- (WIP) Banco de dados local (SQL? SQLite?) para buscar substituições inteiras
 
 ## Árvore de diretórios
 ---
-* ```bin/``` 
-	Onde se encontram os binários (arquivos executáveis) do servidor (`server`) e da CLI (`neutra`) após a compilação.
+* ```bin/```
+	Onde se encontram os binários (arquivos executáveis) do servidor (`neutraliza-web-server`) e da CLI (`neutre-cli`) após a compilação.
 
-* ```headerfiles/``` 
-	Keeps all the custom-made .h header files used in the project.
+* ```headerfiles/```
+	Todos os arquivos de header (.h) necessários para cada programa.
 	
+
+## Sobre os logs
+---
+Uma estimativa grosseira do arquivo de logs estima em média 500 bytes de informação por log, ou seja, o equivalente a 2 tweets. Nada mal!
 
 ## FAQ
 ---
