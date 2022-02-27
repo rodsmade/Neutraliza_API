@@ -1,19 +1,19 @@
 #include "server.h"
 
-void	logger_init(t_logger *logger)
+void	logger_init(void)
 {
 	FILE	*log_file = fopen("../logs/logs.txt", "a");
 
-	logger->fd = log_file->_fileno;
-	logger->transaction_id = 0;
-	logger->timestamp = NULL;
+	g_logger.fd = log_file->_fileno;
+	g_logger.transaction_id = 0;
+	g_logger.timestamp = NULL;
 	return ;
 }
 
-void	logger_free_all(t_logger *logger)
+void	logger_free_all(void)
 {
-	if (logger->timestamp)
-		free(logger->timestamp);
+	if (g_logger.timestamp)
+		free(g_logger.timestamp);
 	return ;
 }
 
@@ -35,8 +35,8 @@ static string get_time(void)
 string	append_string(string original_str, const char *appendage, size_t n)
 {
 	string	new_str;
-	int	orig_len = 0;
-	int	i;
+	int		orig_len = 0;
+	size_t	i;
 
 	orig_len = strlen(original_str);
 	new_str = realloc(original_str, (orig_len + n + 1) * sizeof(char));
@@ -70,18 +70,18 @@ static string get_headers(struct mg_http_message *request)
 	return (headers_to_string);
 }
 
-void	logger_new_request(struct mg_http_message *request, t_logger *logger)
+void	logger_new_request(struct mg_http_message *request)
 {
 	string	headers;
 	string	timestamp;
 
-	logger->transaction_id++;
-	logger->timestamp = get_time();
+	g_logger.transaction_id++;
+	g_logger.timestamp = get_time();
 	headers = get_headers(request);
 	timestamp = ft_strtrim(get_time(), "\n");
-	dprintf(logger->fd
+	dprintf(g_logger.fd
 			, "[{\"log-type\":\"[REQUEST]\",\"log\":[{\"transaction_id\":%ld,\"timestamp\":\"%s\",\"body\":\"%.*s\",\"method\":\"%.*s\",\"protocol\":\"%.*s\",\"query\":\"%.*s\",\"uri\":\"%.*s\",\"headers\":[%s]}]}]\n"
-			, logger->transaction_id
+			, g_logger.transaction_id
 			, timestamp
 			, (int) request->body.len, request->body.ptr
 			, (int) request->method.len, request->method.ptr
@@ -94,32 +94,32 @@ void	logger_new_request(struct mg_http_message *request, t_logger *logger)
 	return ;
 }
 
-void	logger_log_response(int status_code, string headers, string body, t_logger *logger)
+void	logger_log_response(int status_code, string headers, string body)
 {
-	dprintf(logger->fd
+	dprintf(g_logger.fd
 			, "[{\"log-type\":\"[RESPONSE]\",\"log\":[{\"transaction_id\":%ld,\"status_code\":\"%s\",\"response_body\":[%s],\"response_headers\":[%s]}]}]\n"
-			, logger->transaction_id
+			, g_logger.transaction_id
 			, http_status_to_string(status_code)
 			, body
 			, headers);
 	return ;
 }
 
-void	logger_info(string	info_msg, t_logger *logger)
+void	logger_info(string	info_msg)
 {
-	dprintf(logger->fd, "[INFO] %s\n", info_msg);
+	dprintf(g_logger.fd, "[INFO] %s\n", info_msg);
 	return ;
 }
 
-void	logger_error(string	err_msg, t_logger *logger)
+void	logger_error(string	err_msg)
 {
-	dprintf(logger->fd, "[ERROR] %s\n", err_msg);
+	dprintf(g_logger.fd, "[ERROR] %s\n", err_msg);
 	return ;
 }
 
-void	logger_close(t_logger *logger)
+void	logger_close(void)
 {
-	logger_free_all(logger);
-	close(logger->fd);
+	logger_free_all();
+	close(g_logger.fd);
 	return;
 }
