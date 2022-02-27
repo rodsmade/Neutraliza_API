@@ -59,6 +59,7 @@ enum e_class {
 typedef struct s_word
 {
 	char	*name;
+	int		length;
 	int		is_adjective;
 	string	class;
 }			t_word;
@@ -100,7 +101,7 @@ void		route_request_to_endpoint(struct mg_connection *connection, struct mg_http
 void		parse_words(t_word_list	**words_list);
 
 // services_translation.c
-string		translate(const char *body);
+string		translation_service(const char *body);
 
 // utils_art.c
 void		print_grand_opener(void);
@@ -116,8 +117,8 @@ int			http_match_method(struct mg_http_message *request, int method);
 char		**ft_split(char const *s, char delimiter);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strtrim(char const *s1, char const *set);
-string		append_string(string original_str, const char *appendage, size_t n);
-char		*ft_append_str_va(char* body, int count_append, char *appendage, ...);
+string		ft_append_string(string original_str, const char *appendage, size_t n);
+char		*ft_append_string_va(char* body, int count_append, char *appendage, ...);
 void		ft_free_arr(void ***arr);
 void		ft_free_ptr(void **ptr);
 
@@ -133,7 +134,7 @@ void		logger_error(string	err_msg);
 void		logger_info(string	info_msg);
 void		logger_init(void);
 void		logger_new_request(struct mg_http_message *request);
-string		append_string(string original_str, const char *appendage, size_t n);
+string		ft_append_string(string original_str, const char *appendage, size_t n);
 void		logger_log_response(int status_code, string headers, string body);
 
 
