@@ -1,18 +1,69 @@
 #include "server.h"
 
-void	call_dic_api(void)
+static size_t
+get_ext_api_response(void *contents, size_t size, size_t nmemb, void *userp)
 {
-	//use libcurl
+	size_t realsize = size * nmemb;
+	t_memory *mem = (t_memory *) userp;
+
+	char *ptr = realloc(mem->memory, mem->size + realsize + 1);
+	if(!ptr) {
+		/* out of memory! */
+		printf("not enough memory (realloc returned NULL)\n");
+		return 0;
+	}
+
+	mem->memory = ptr;
+	memcpy(&(mem->memory[mem->size]), contents, realsize);
+	mem->size += realsize;
+	mem->memory[mem->size] = 0;
+
+	return realsize;
 }
 
-void	parse_words(t_word_list	**words_list)
+char	*ext_api_call_dictionary(char *word)
 {
-	// make api call item by item
-	t_word_list	*pivot = *words_list;
-	while (pivot)
-	{
-		printf("find class: {name = %s; class = %s}\n", pivot->word.name, pivot->word.class);
-		pivot = pivot->next;
+	CURL *curl_handle;
+	CURLcode res;
+	t_memory chunk;
+
+	chunk.memory = malloc(1);
+	chunk.size = 0;	
+
+	/* init the curl session */
+	curl_global_init(CURL_GLOBAL_ALL);
+
+	curl_handle = curl_easy_init();
+
+	/* specify URL to get */
+	char *url = ft_append_str_va(strdup("https://significado.herokuapp.com/"), 1, word);
+	curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+
+	/* send all data to this function	*/
+	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, get_ext_api_response);
+
+	/* we pass our 'chunk' struct to the callback function */
+	curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
+
+	/* make external api call */
+	res = curl_easy_perform(curl_handle);
+
+	/* check for errors */
+	if(res != CURLE_OK) {
+		fprintf(stderr, "curl_easy_perform() failed: %s\n",
+						curl_easy_strerror(res));
+		curl_easy_cleanup(curl_handle);
+		curl_global_cleanup();
+		ft_free_ptr((void *)&word);
+		free(chunk.memory);
+		return (NULL);
 	}
-	return ;
+	else {
+		char* response = strdup(chunk.memory);
+		curl_easy_cleanup(curl_handle);
+		curl_global_cleanup();
+		ft_free_ptr((void *)&url);
+		free(chunk.memory);
+		return (response);
+	}
 }

@@ -1,7 +1,7 @@
 
 # COMPILATION VARIABLES
-CC = gcc -Wall -Werror -Wextra
-CFLAGS = -I $(INCLUDE_PATH) $(LIBS) # -Wall -Wextra -Werror
+CC = gcc
+CFLAGS = -I $(INCLUDE_PATH) -Wall -Wextra -Werror
 LIBS = -lbsd -lcurl
 DEBUG = -g
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -q --tool=memcheck
@@ -28,6 +28,7 @@ SRC_FILES = cJSON.c \
 			services_ext_api_calls.c \
 			services_load_resource.c \
 			services_routing.c \
+			services_syntactic_analysis.c \
 			services_translation.c \
 			utils_art.c \
 			utils_http.c \
@@ -48,7 +49,7 @@ make_dir:
 
 # -> build server
 $(NAME): $(OBJECTS)
-	@$(CC) -o $(NAME) $(OBJECTS)
+	@$(CC) -o $(NAME) $(OBJECTS) $(LIBS)
 
 # -> creates object files
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c

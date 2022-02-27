@@ -88,7 +88,7 @@ extern t_logger	g_logger;
 
 // ------------------------------------------------		PROTOTYPES	-----------
 // services_ext_api_calls.c
-void		parse_words(t_word_list	**words_list);
+char		*ext_api_call_dictionary(char *word);
 
 // services_load_resources.c
 string		load_resource(string resource_path);
@@ -96,8 +96,11 @@ string		load_resource(string resource_path);
 // services_routing.c
 void		route_request_to_endpoint(struct mg_connection *connection, struct mg_http_message *request);
 
+// services_syntactic_analysis.c
+void		parse_words(t_word_list	**words_list);
+
 // services_translation.c
-string	translate(const char *body);
+string		translate(const char *body);
 
 // utils_art.c
 void		print_grand_opener(void);
