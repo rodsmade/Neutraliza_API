@@ -59,6 +59,7 @@ enum e_class {
 typedef struct s_word
 {
 	char	*name;
+	int		is_adjective;
 	string	class;
 }			t_word;
 
@@ -96,9 +97,7 @@ string		load_resource(string resource_path);
 void		route_request_to_endpoint(struct mg_connection *connection, struct mg_http_message *request);
 
 // services_translation.c
-void		create_word_list(string *split_body, t_word_list **words_list);
-string		*split_and_trim_body(struct mg_str body);
-string		translate(void);
+string	translate(const char *body);
 
 // utils_art.c
 void		print_grand_opener(void);
@@ -111,9 +110,13 @@ int			http_status_to_int(enum e_http_method method);
 int			http_match_method(struct mg_http_message *request, int method);
 
 // utils_libft.c + utils_libft_ft_split.c
+char		**ft_split(char const *s, char delimiter);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strtrim(char const *s1, char const *set);
-char		**ft_split(char const *s, char delimiter);
+string		append_string(string original_str, const char *appendage, size_t n);
+char		*ft_append_str_va(char* body, int count_append, char *appendage, ...);
+void		ft_free_arr(void ***arr);
+void		ft_free_ptr(void **ptr);
 
 // utils_list.c
 t_word_list	*ft_lstnew(t_word word);

@@ -5,6 +5,7 @@ void	route_request_to_endpoint(struct mg_connection *connection, struct mg_http_
 	if (mg_http_match_uri(request, "/") && http_match_method(request, GET))
 	{
 		string response_body = "{\"response\": \"Server Up and Running!!!\"}";
+
 		mg_http_reply(connection
 						, http_status_to_int(OK_200)
 						, RESPONSE_HEADER
@@ -15,9 +16,9 @@ void	route_request_to_endpoint(struct mg_connection *connection, struct mg_http_
 	}
 	else if (mg_http_match_uri(request, "/v1.0/home") && http_match_method(request, GET))
 	{
-		// implement: string load_resource(landing-page.html)
 		string resource = load_resource("resources/landing-page.html");
 		string response_body = "{\"response\": \"landing-page.html\"}";
+
 		mg_http_reply(connection
 						, http_status_to_int(OK_200)
 						, RESPONSE_HEADER
@@ -28,18 +29,12 @@ void	route_request_to_endpoint(struct mg_connection *connection, struct mg_http_
 	}
 	else if (mg_http_match_uri(request, "/v1.0/translation") && http_match_method(request, POST))
 	{
-		string *split_body = split_and_trim_body(request->body);
-		t_word_list	*words_list = NULL;
-		create_word_list(split_body, &words_list);
-		parse_words(&words_list);	//api_call
-		string translation = translate();
-		string translation_json = strdup("{\"translation\":\"");
-		translation_json = append_string(translation_json, translation, strlen(translation));
-		translation_json = append_string(translation_json, "\"}", 2);
+		string translation = translate(request->body.ptr);
+		string translation_json = ft_append_str_va(strdup("{\"translation\":\""), 2, translation, "\"}");
 		mg_http_reply(connection
 						, http_status_to_int(OK_200)
 						, RESPONSE_HEADER
-						, "{\"Translation\": \"%s\"}", translation);
+						, translation_json);
 		logger_log_response(OK_200
 							, RESPONSE_HEADER_JSON
 							, translation_json);
