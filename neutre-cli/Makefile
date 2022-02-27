@@ -54,3 +54,7 @@ clean:
 # -> deletes .o files + static library file + executable; also runs libft's fclean target
 fclean: clean
 	@$(RM) $(BIN_PATH)$(NAME)
+
+re: fclean all
+
+.PHONY:	all make_dir clean fclean re
