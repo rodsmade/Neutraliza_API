@@ -27,26 +27,6 @@ static string get_time(void)
   return (asctime(timeinfo));
 }
 
-/**
- * In order for this function to work properly with NO LEAKS, original_str
- * HAS to be malloced initially. It WILL be freed. So it's reasonable to call
- * my_string = append_string(my_string, "something");
-**/
-string	append_string(string original_str, const char *appendage, size_t n)
-{
-	string	new_str;
-	int		orig_len = 0;
-	size_t	i;
-
-	orig_len = strlen(original_str);
-	new_str = realloc(original_str, (orig_len + n + 1) * sizeof(char));
-	new_str[orig_len + n] = '\0';
-	i = -1;
-	while (++i < n)
-		new_str[orig_len + i] = appendage[i];
-	return (new_str);
-}
-
 static string get_headers(struct mg_http_message *request)
 {
 	string	headers_to_string = strdup("");
