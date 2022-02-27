@@ -6,8 +6,10 @@ void	check_double_dash(char *argv, t_exec_flags *exec_flags)
 		exec_flags->opt_d = 1;
 	else if (strcmp(&argv[2], "help") == 0)
 		exec_flags->opt_h = 1;
+	else if (strcmp(&argv[2], "list") == 0)
+		exec_flags->opt_l = 1;
 	else if (strcmp(&argv[2], "all") == 0)
-		exec_flags->opt_a = 1;
+		exec_flags->type_a = 1;
 	else if (strcmp(&argv[2], "get") == 0)
 		exec_flags->type_g = 1;
 	else if (strcmp(&argv[2], "post") == 0)
@@ -27,26 +29,33 @@ void	check_double_dash(char *argv, t_exec_flags *exec_flags)
 
 void	check_single_dash(char *argv, t_exec_flags *exec_flags)
 {
-	if (ft_strchr(&argv[1], 'd'))
-		exec_flags->opt_d = 1;
-	if (ft_strchr(&argv[1], 'h'))
-		exec_flags->opt_h = 1;
-	if (ft_strchr(&argv[1], 'a'))
-		exec_flags->opt_a = 1;
-	if (ft_strchr(&argv[1], 'a'))
-		exec_flags->type_a = 1;
-	if (ft_strchr(&argv[1], 'g'))
-		exec_flags->type_g = 1;
-	if (ft_strchr(&argv[1], 'p'))
-		exec_flags->type_p = 1;
-	if (ft_strchr(&argv[1], 'i'))
-		exec_flags->type_i = 1;
-	if (ft_strchr(&argv[1], 'e'))
-		exec_flags->type_e = 1;
-	if (ft_strchr(&argv[1], 'm'))
-		exec_flags->form_m = 1;
-	if (ft_strchr(&argv[1], 'b'))
-		exec_flags->form_b = 1;
+	int	i = 0;
+
+	while (argv[++i])
+	{
+		if (ft_strchr(&argv[i], 'd'))
+			exec_flags->opt_d = 1;
+		else if (ft_strchr(&argv[i], 'h'))
+			exec_flags->opt_h = 1;
+		else if (ft_strchr(&argv[i], 'l'))
+			exec_flags->opt_l = 1;
+		else if (ft_strchr(&argv[i], 'a'))
+			exec_flags->type_a = 1;
+		else if (ft_strchr(&argv[i], 'g'))
+			exec_flags->type_g = 1;
+		else if (ft_strchr(&argv[i], 'p'))
+			exec_flags->type_p = 1;
+		else if (ft_strchr(&argv[i], 'i'))
+			exec_flags->type_i = 1;
+		else if (ft_strchr(&argv[i], 'e'))
+			exec_flags->type_e = 1;
+		else if (ft_strchr(&argv[i], 'm'))
+			exec_flags->form_m = 1;
+		else if (ft_strchr(&argv[i], 'b'))
+			exec_flags->form_b = 1;
+		else
+			print_help_msg_exit();
+	}
 	return ;
 }
 
@@ -58,7 +67,7 @@ void	capture_flags(int argc, char *argv[], t_exec_flags *exec_flags)
 	{
 		if (argv[i][0] == '-' && argv[i][1] == '-')	// o arg começa com '--'
 			check_double_dash(argv[i], exec_flags);
-		else if (argv[i][0] == '-' && argv[i][1] && argv[i][1] != '-')
+		else if (argv[i][0] == '-' && argv[i][1] && argv[i][1] != '-') // o arg começa com '-'
 			check_single_dash(argv[i], exec_flags);
 		else
 			print_help_msg_exit();
@@ -71,9 +80,15 @@ void	check_flags_consistency(t_exec_flags *exec_flags)
 	// crazy boolean logic BUT. if it is NOT the case that ONLY ONE between 
 	// d, h or a flags is true, than REFUSE INPUT because the three operations
 	// cannot concur !!
-	if ((!exec_flags->opt_d || exec_flags->opt_h || exec_flags->opt_a)
-		&& (exec_flags->opt_d || !exec_flags->opt_h || exec_flags->opt_a)
-		&& (exec_flags->opt_d || exec_flags->opt_h || !exec_flags->opt_a))
+	if ((!exec_flags->opt_d || exec_flags->opt_h || exec_flags->opt_l)
+		&& (exec_flags->opt_d || !exec_flags->opt_h || exec_flags->opt_l)
+		&& (exec_flags->opt_d || exec_flags->opt_h || !exec_flags->opt_l))
 		print_help_msg_exit();
+	if (exec_flags->form_m && exec_flags->form_b)
+		print_help_msg_exit();
+	if (exec_flags->opt_l
+		&& (!exec_flags->type_g && !exec_flags->type_p && !exec_flags->type_e
+			&& !exec_flags->type_i))
+		exec_flags->type_a = 1;
 	return ;
 }
