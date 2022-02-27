@@ -54,6 +54,10 @@ $(NAME): $(OBJECTS)
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+# -> Release the server!
+run: all
+	$(NAME)
+
 # SANITIZE
 # -> deletes all .o files; also runs libft's clean target
 clean:
@@ -65,4 +69,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:	all make_dir clean fclean re
+.PHONY:	all make_dir clean fclean re run
