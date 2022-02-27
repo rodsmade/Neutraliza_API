@@ -38,7 +38,7 @@ char	*get_definition(char *word)
 	curl_handle = curl_easy_init();
 
 	// set options for the curl call
-	char *url = ft_append_str_va(strdup("https://significado.herokuapp.com/"), 1, word);
+	char *url = ft_append_string_va(strdup("https://significado.herokuapp.com/"), 1, word);
 	curl_easy_setopt(curl_handle, CURLOPT_URL, url);
 	curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, get_ext_api_response);
