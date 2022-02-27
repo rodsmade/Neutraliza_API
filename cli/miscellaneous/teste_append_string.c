@@ -45,8 +45,8 @@ char	*append_n_strs(char* body, int count_append, char *appendage, ...)
 
 int main()
 {
-	char *init = strdup("hello ");
-	init =  append_n_strs(init, 5, "world ", "what ", "is", " ", "up?");
+	// char *init = strdup("hello ");
+	char *init =  append_n_strs(strdup("hello "), 5, "world ", "what ", "is", " ", "up?");
 	printf("%s\n", init);
 	free(init);
 	return 0 ;

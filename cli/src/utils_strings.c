@@ -3,8 +3,7 @@
 /**
  * In order for this function to work properly with NO LEAKS, body HAS TO BE
  * malloced previously. It WILL be freed. So it's reasonable to call:
- * char	*my_string = strdup("");
- * my_string = append_string(my_string, "something");
+ * my_string = append_string(strdup(""), 2, "some", "string");
 **/
 char	*append_n_strs(char* body, int count_append, char *appendage, ...)
 {
