@@ -10,9 +10,10 @@ static int	look_up_class(char *word)
 	cJSON *response_json = cJSON_Parse(api_response);
 	if (response_json == NULL)
 	{
-		printf("deu ruim criar o json\n");
+		char *err_log = ft_append_string_va(strdup("Failed to create JSON, word: "), 1, word);
+		logger_error(err_log);
 		cJSON_Delete(response_json);
-		ft_free_ptr((void *)&word);
+		ft_free_ptr((void *)&err_log);
 		return (0);
 	}
 
@@ -21,9 +22,8 @@ static int	look_up_class(char *word)
 	{
 		char *info_log = ft_append_string_va(strdup("No definitions found for word: "), 1, word);
 		logger_info(info_log);
-		ft_free_ptr((void *)&info_log);
 		cJSON_Delete(response_json);
-		ft_free_ptr((void *)&word);
+		ft_free_ptr((void *)&info_log);
 		return (0);
 	}
 	const cJSON *word_definition = NULL;
@@ -53,7 +53,7 @@ void	parse_words(t_word_list	**words_list)
 	while (pivot)
 	{
 		pivot->word.is_adjective = look_up_class(pivot->word.name);
-		printf("find class: {name = %s; is_adj= %d}\n", pivot->word.name, pivot->word.is_adjective);
+		printf("word: {name = %s; is_adj= %d}\n", pivot->word.name, pivot->word.is_adjective);
 		pivot = pivot->next;
 	}
 	return ;

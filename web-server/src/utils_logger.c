@@ -4,6 +4,8 @@ void	logger_init(void)
 {
 	FILE	*log_file = fopen("../logs/logs.txt", "a");
 
+	if (!log_file)
+		logger_error("Couldn't open logs file");
 	g_logger.fd = log_file->_fileno;
 	g_logger.transaction_id = 0;
 	g_logger.timestamp = NULL;
@@ -50,7 +52,7 @@ static string get_headers(struct mg_http_message *request)
 	return (headers_to_string);
 }
 
-void	logger_new_request(struct mg_http_message *request)
+void	logger_log_new_request(struct mg_http_message *request)
 {
 	string	headers;
 	string	timestamp;

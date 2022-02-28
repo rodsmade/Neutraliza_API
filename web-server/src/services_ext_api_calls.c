@@ -9,7 +9,7 @@ get_ext_api_response(void *contents, size_t size, size_t nmemb, void *userp)
 	char *ptr = realloc(mem->memory, mem->size + realsize + 1);
 	if(!ptr) {
 		/* out of memory! */
-		printf("not enough memory (realloc returned NULL)\n");
+		logger_error("Not enough memory to get dicio-API response! (realloc returned NULL)\n");
 		return 0;
 	}
 
@@ -50,8 +50,9 @@ char	*ext_api_call_dictionary(char *word)
 
 	/* check for errors */
 	if(res != CURLE_OK) {
-		fprintf(stderr, "curl_easy_perform() failed: %s\n",
-						curl_easy_strerror(res));
+		char *error_log = ft_append_string_va(strdup("curl_easy_perform() failed: "), 1, curl_easy_strerror(res));
+		logger_error(error_log);
+		ft_free_ptr((void *)&error_log);
 		curl_easy_cleanup(curl_handle);
 		curl_global_cleanup();
 		ft_free_ptr((void *)&word);

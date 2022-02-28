@@ -133,7 +133,7 @@ void		logger_close(void);
 void		logger_error(string	err_msg);
 void		logger_info(string	info_msg);
 void		logger_init(void);
-void		logger_new_request(struct mg_http_message *request);
+void		logger_log_new_request(struct mg_http_message *request);
 string		ft_append_string(string original_str, const char *appendage, size_t n);
 void		logger_log_response(int status_code, string headers, string body);
 

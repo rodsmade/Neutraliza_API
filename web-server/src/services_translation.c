@@ -8,7 +8,7 @@ static string	*split_and_trim_body(const char *body)
 	list_of_words = ft_split(body, ' ');
 	while (list_of_words[++i])
 	{
-		list_of_words[i] = ft_strtrim(list_of_words[i], "!.,?");
+		list_of_words[i] = ft_strtrim(list_of_words[i], "!.,?-\"\'+&$@#*()=_");
 		printf("word[%i]: %s\n", i, list_of_words[i]);
 	}
 	return (list_of_words);
