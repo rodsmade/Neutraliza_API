@@ -1,5 +1,8 @@
 #include "neutraliza-cli.h"
 
+static void	*free_n_null(char **s1, char **s2, char **s3);
+static char	*return_line(char **rest, char **buffer, char **line, int i);
+
 char	*get_next_line(int fd)
 /**
  *	This function reads from a file descriptor and returns one line read

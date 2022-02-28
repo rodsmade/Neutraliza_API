@@ -1,6 +1,6 @@
 # COMPILATION VARIABLES
 CC = gcc
-CFLAGS = -I $(INCLUDE_PATH) # -Wall -Wextra -Werror
+CFLAGS = -I $(INCLUDE_PATH) -Wall -Wextra -Werror
 DEBUG = -g
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -q --tool=memcheck
 
@@ -18,8 +18,9 @@ BIN_PATH = ./bin/
 
 # FILES
 NAME = $(BIN_PATH)neutre
-HEADERS = $(INCLUDE_PATH)neutraliza-cli.h
+HEADERS = $(INCLUDE_PATH)neutraliza-cli.h $(INCLUDE_PATH)cJSON.h
 SRC_FILES = neutraliza-cli.c \
+			cJSON.c \
 			utils_exec.c \
 			utils_get_next_line.c \
 			utils_init.c \

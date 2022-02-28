@@ -33,25 +33,25 @@ static void	check_single_dash(char *argv, t_exec_flags *exec_flags)
 
 	while (argv[++i])
 	{
-		if (ft_strchr(&argv[i], 'd'))
+		if (argv[i] == 'd')
 			exec_flags->opt_d = 1;
-		else if (ft_strchr(&argv[i], 'h'))
+		else if (argv[i] == 'h')
 			exec_flags->opt_h = 1;
-		else if (ft_strchr(&argv[i], 'l'))
+		else if (argv[i] == 'l')
 			exec_flags->opt_l = 1;
-		else if (ft_strchr(&argv[i], 'a'))
+		else if (argv[i] == 'a')
 			exec_flags->type_a = 1;
-		else if (ft_strchr(&argv[i], 'g'))
+		else if (argv[i] == 'g')
 			exec_flags->type_g = 1;
-		else if (ft_strchr(&argv[i], 'p'))
+		else if (argv[i] == 'p')
 			exec_flags->type_p = 1;
-		else if (ft_strchr(&argv[i], 'i'))
+		else if (argv[i] == 'i')
 			exec_flags->type_i = 1;
-		else if (ft_strchr(&argv[i], 'e'))
+		else if (argv[i] == 'e')
 			exec_flags->type_e = 1;
-		else if (ft_strchr(&argv[i], 'm'))
+		else if (argv[i] == 'm')
 			exec_flags->form_m = 1;
-		else if (ft_strchr(&argv[i], 'b'))
+		else if (argv[i] == 'b')
 			exec_flags->form_b = 1;
 		else
 			print_help_msg_exit();

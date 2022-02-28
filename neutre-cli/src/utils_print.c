@@ -50,7 +50,6 @@ static void	printl_endpoint_digest(t_endpoint endpoint)
 void	display_dashboard(void)
 {
 	t_endpoint	endpoints[3];
-	int			reqs_per_endpoint[3];
 	int			i = -1;
 	char	*uri_json;
 	char	*method_json;
@@ -93,5 +92,81 @@ void	display_dashboard(void)
 	printl_dash();
 	printl_dot();
 	printl_dot_dash();
+	return ;
+}
+
+void	print_matching_entry_minified(char *log_type, char *uri, char *method)
+{
+	char	*file_name = "../logs/logs.txt";
+	FILE	*fp;
+	char	*line;
+
+	fp = fopen(file_name, "r");
+	
+	while((line = get_next_line(fp->_fileno)) != NULL)
+	{
+		if (match_entry_by_str(line, log_type, uri, method))
+			printf("%s", line);
+		free(line);
+	}
+	fclose(fp);
+	return ;
+}
+
+void	print_matching_entry_beautiful(char *log_type, char *uri, char *method)
+{
+	char	*file_name = "../logs/logs.txt";
+	FILE	*fp;
+	char	*line;
+
+	fp = fopen(file_name, "r");
+	
+	while((line = get_next_line(fp->_fileno)) != NULL)
+	{
+		if (match_entry_by_str(line, log_type, uri, method))
+		{
+			cJSON *entry_json = cJSON_Parse(line);
+			cJSON_Print(entry_json);
+			cJSON_Delete(entry_json);
+		}
+		free(line);
+	}
+	fclose(fp);
+	return ;
+}
+
+void	print_beautiful_logs(t_exec_flags *exec_flags)
+{
+	if (exec_flags->type_a)
+		print_matching_entry_beautiful("*", "*", "*");
+	else
+	{
+		if (exec_flags->type_e)
+			print_matching_entry_beautiful("\"log-type\":\"[ERROR]\"", NULL, NULL);
+		if (exec_flags->type_g)
+			print_matching_entry_beautiful("\"log-type\":\"[REQUEST]\"", NULL, "\"method\":\"GET\"");
+		if (exec_flags->type_i)
+			print_matching_entry_beautiful("\"log-type\":\"[INFO]\"", NULL, NULL);
+		if (exec_flags->type_p)
+			print_matching_entry_beautiful("\"log-type\":\"[REQUEST]\"", NULL, "\"method\":\"POST\"");
+	}
+	return ;
+}
+
+void	print_minified_logs(t_exec_flags *exec_flags)
+{
+	if (exec_flags->type_a)
+		print_matching_entry_minified("*", "*", "*");
+	else
+	{
+		if (exec_flags->type_e)
+			print_matching_entry_minified("\"log-type\":\"[ERROR]\"", NULL, NULL);
+		if (exec_flags->type_g)
+			print_matching_entry_minified("\"log-type\":\"[REQUEST]\"", NULL, "\"method\":\"GET\"");
+		if (exec_flags->type_i)
+			print_matching_entry_minified("\"log-type\":\"[INFO]\"", NULL, NULL);
+		if (exec_flags->type_p)
+			print_matching_entry_minified("\"log-type\":\"[REQUEST]\"", NULL, "\"method\":\"POST\"");
+	}
 	return ;
 }

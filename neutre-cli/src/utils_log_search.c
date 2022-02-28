@@ -1,10 +1,13 @@
 #include "neutraliza-cli.h"
 
+/**
+ * @brief 
+ *  Returns 1 if entry matches all criteria, 0 otherwise.
+ */
 int	match_entry_by_str(char *line, char *log_type, char *uri, char *method)
-// returns 1 if entry matches all criteria, 0 otherwise.
 {
-	char	*arg;
-
+	if (strcmp(log_type, "*") == 0 && strcmp(uri, "*") == 0 && strcmp(method, "*") == 0)
+		return (1);
 	if (!log_type && !uri && !method)
 		return (0);
 	if (log_type && !strstr(line, log_type))

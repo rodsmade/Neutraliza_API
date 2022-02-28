@@ -20,7 +20,7 @@ char	*append_n_strs(char* body, int count_append, char *appendage, ...)
 	// append first argument
 	body_len = strlen(body);
 	appendage_len = strlen(appendage);
-	if (new_str = realloc(body, (body_len + appendage_len + 1) * sizeof(char)))
+	if ((new_str = realloc(body, (body_len + appendage_len + 1) * sizeof(char))))
 	{
 		new_str[body_len + appendage_len] = '\0';
 		i = -1;
@@ -35,7 +35,7 @@ char	*append_n_strs(char* body, int count_append, char *appendage, ...)
 		arg = va_arg(args, char *);
 		body_len = strlen(new_str);
 		appendage_len = strlen(arg);
-		if (new_str = realloc(new_str, (body_len + appendage_len + 1) * sizeof(char)))
+		if ((new_str = realloc(new_str, (body_len + appendage_len + 1) * sizeof(char))))
 		{
 			new_str[body_len + appendage_len] = '\0';
 			i = -1;

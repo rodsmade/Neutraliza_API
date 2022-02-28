@@ -8,6 +8,7 @@
 # include <string.h>	// strcmp()
 # include <stdarg.h>	// vargs
 # include <unistd.h>	// needed for get_next_line()
+# include "cJSON.h"		// parse to/from JSON
 
 # define	BUFFER_SIZE	100
 
@@ -40,10 +41,6 @@ void		execute_cmd(t_exec_flags *exec_flags);
 
 // utils_get_next_line.c
 char		*get_next_line(int fd);
-static void	*free_n_null(char **s1, char **s2, char **s3);
-static char	*copy_up_to_nl(char *string);
-static char	*save_past_first_nl(char *source);
-static char	*return_line(char **rest, char **buffer, char **line, int i);
 size_t		ft_strlen(const char *s);
 char		*ft_strdup(const char *s);
 char		*ft_strjoin(char const *s1, char const *s2);
@@ -57,8 +54,11 @@ void		init_flags(t_exec_flags *exec_flags);
 char		*ft_strchr(const char *s, int c);
 void		ft_free_arr(void ***arr);
 void		ft_free_ptr(void **ptr);
+char		*ft_substr(char const *s, unsigned int start, size_t len);
+char		*ft_strtrim(char const *s1, char const *set);
 
 // utils_log_search.c
+int			match_entry_by_str(char *line, char *log_type, char *uri, char *method);
 int			count_logs(char *log_type, char *uri, char *method);
 
 // utils_parsing.c
@@ -69,6 +69,8 @@ void		check_flags_concurrency(t_exec_flags *exec_flags);
 void		print_help_msg_exit(void);
 void		print_help_menu(void);
 void		display_dashboard(void);
+void		print_beautiful_logs(t_exec_flags *exec_flags);
+void		print_minified_logs(t_exec_flags *exec_flags);
 
 // utils_strings.c
 char		*append_n_strs(char* body, int count_append, char *appendage, ...);
