@@ -50,12 +50,14 @@ char	*ext_api_call_dictionary(char *word)
 
 	/* check for errors */
 	if(res != CURLE_OK) {
-		char *error_log = ft_append_string_va(strdup("curl_easy_perform() failed: "), 1, curl_easy_strerror(res));
+		char *curl_error = strdup(curl_easy_strerror(res));
+		char *error_log = ft_append_string_va(strdup("curl_easy_perform() failed: "), 1, curl_error);
 		logger_error(error_log);
 		ft_free_ptr((void *)&error_log);
 		curl_easy_cleanup(curl_handle);
 		curl_global_cleanup();
 		ft_free_ptr((void *)&word);
+		ft_free_ptr((void *)&curl_error);
 		free(chunk.memory);
 		return (NULL);
 	}
