@@ -1,6 +1,6 @@
 .TH neutre 1
 .SH NAME
-neutre \- CLI to spelunk logs of Neutraliza web server
+neutre \- CLI to spelunk logs of the Neutraliza API!
 .SH SYNOPSIS
 .B neutre
 .ul
@@ -11,22 +11,41 @@ FORMAT
 .B neutre
 [OPTIONS]
 .SH DESCRIPTION
-This is a simple script to find, list and digest the logs generated during the operation of the Neutraliza web server.
+This is a simple command to find, list and digest the logs generated during the operation of the Neutraliza web server. If no flags are specified, printing the dashboard is the default behaviour. Only one out of the three OPTIONS must be specified. When listing logs, the flag '-a' takes precedence over all other LOG_TYPEs. Only one of the two FORMATs (minified or beautiful) must be specified. Otherwise, an error message is returned.
 .SH OPTIONS
 .TP
-.BR h
-Print Hello
+.BR --dashboard, -d, (no_option)
+Display dashboard with global statistics (all requests, infos, errors, etc.)
 .TP
-.BR b 
-Print Bye
+.BR --list, -l
+List all logs matching certain criteria (see LOG_TYPE below).
+.TP
+.BR --help, -h
+Display help menu.
 .SH LOG_TYPE
 .TP
-.BR h
-Print Hello
+.BR --all, -a
+List all logs -- DEFAULT
 .TP
-.BR b 
-Print Bye
+.BR --get, -g
+List all logs of GET requests
+.TP
+.BR --post, -p
+List all logs of POST requests
+.TP
+.BR --info, -i
+List all logs of INFO messages
+.TP
+.BR --error, -e
+list all logs of ERROR messages
+.SH FORMAT
+.TP
+.BR --mini, -m
+Display logs in minified version (one log per line) -- DEFAULT
+.TP
+.BR --beauty, -b
+Display logs º¤ø,¸¸,ø¤º°`°º¤ø, b e a u t i f u l l y ,ø¤°º¤ø,¸¸,ø¤°º¤ø,¸¸
 .SH AUTHOR
 Written by roaraujo | Rods (Rodrigo Gregoldo) - github.com/rodsmade
 .SH COPYRIGHT
-You may copy away at will. Here's to fearless enjoyment...
+You may copy away at will. Here's to fearless enjoyment . . .
