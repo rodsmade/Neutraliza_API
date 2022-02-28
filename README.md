@@ -9,7 +9,6 @@ Palavras importam. E palavras constroem mundo. Se é verdade que a língua é vi
 A Neutraliza surge então como um esforço objetivo em direção a construir um mundo novo, mais inclusivo e receptivo da pluralidade de existências. Vamos juntes construir esse mundo, começando pelas palavras :)
 
 ## Como rodar localmente
----
 A Neutraliza está dando seus primeiros passos, e por isso ainda não é possível acessá-la via web, fazendo-se necessário baixar, compilar e subir o servidor para então poder utilizá-la na porta 4242 da máquina local (`localhost:4242`).
 
 ### Passo 1 - baixar este repositório
@@ -40,13 +39,11 @@ http://localhost:4242/v1.0/home
 Pronto! Agora é só enviar seus textos para serem neutralizados! :)
 
 ## Endpoints
----
 - ` GET /` -  Raiz. Teste para verificar o status do servidor.
 - ` GET /v1.0/home` - Landing page. Interface gráfica para utilizar a API pelo navegador.
 - ` POST /v1.0/translation + body` - Envie o texto para ser traduzido! O texto deve ser enviado no corpo da requisição.
 
 ## Tech Stack
----
 ### Backend:
 - [Mongoose](https://mongoose.ws/) - Embedded Web Server
 - [cJSON](https://github.com/DaveGamble/cJSON) - Ultralightweight JSON parser in ANSI C.
@@ -62,7 +59,6 @@ Pronto! Agora é só enviar seus textos para serem neutralizados! :)
 - (WIP) Banco de dados local (SQL? SQLite?) para buscar substituições inteiras
 
 ## Árvore de diretórios
----
 * ```desafio-labs/```
 	Arquivos originais do repositório.
 
@@ -98,7 +94,6 @@ Pronto! Agora é só enviar seus textos para serem neutralizados! :)
 
 
 ## Sobre os logs
----
 Uma estimativa grosseira do arquivo de logs estima em média 500 bytes de informação por log, ou seja, o equivalente a 2 tweets. Nada mal!
 
 Para navegar pelos logs de maneira mais eficiente, escrevi a CLI neutre. Para utilizá-la, é necessário compilar o programa. A partir da pasta raiz (Neutraliza - Passo 1 acima), rode o seguinte comando:
@@ -125,29 +120,22 @@ man man_pages/neutre.1
 ```
 
 ## FAQ
----
 ### O que é uma linguagem neutra (não-binária)?
 - É uma linguagem que reconhece a existência de mais gêneros além do masculino e feminino. O português é uma língua majoritariamente binária pois possui apenas duas desinências de gênero: **-a** (gênero feminino) e **-o** (gênero masculino). Para se tornar uma linguagem não-binária, é necessária a adoção de uma terceira desinência de gênero, aqui proposta como **-e**, a desinência de gênero neutro. É particularmente importante para designar _pessoas_ que não se identificam com o gênero feminino ou masculino.
 
 ### O que é uma linguagem não-sexista?
-- É uma linguagem que não favorece um gênero ao outro. No português, costuma-se utilizar o gênero masculino como genérico, por exemplo: "A 42 forma desenvolvedores humanos". Certamente a escola não atende somente o público masculino, e no entanto, ao se referir a um grupo composto por pessoas de mais de um gênero, por costume/tradição utiliza-se o masculino.
+- É uma linguagem que não favorece um gênero em detrimento de outro. No português, costuma-se utilizar o gênero masculino como genérico, por exemplo: "A 42 forma desenvolvedores humanos". Certamente a escola não atende somente o público masculino, e no entanto, ao se referir a um grupo composto por pessoas de mais de um gênero, por costume/tradição utiliza-se o masculino.
 
 ### O que é uma linguagem inclusiva?
--  .
+- No contexto da linguagem escrita, é uma linguagem que dá pra ser lida por leitores de tela sem prejuízo à compreensão de quem utiliza esse tipo de software. Grafias como "querid@s" ou "queridxs", apesar de acolherem pessoas não-binárias, não são bem interpretadas por leitores de tela. Por isso, o uso da vogal **-e** é útil também por ser uma terminação passível de ser lida e falada - "querides".
 
-### Por que usar linguagem gênero-neutra?
+### Por que usar linguagem gênero-neutra e não-sexista?
 A consequência não-intencionada de se utilizar o gênero masculino como genérico é a de apagar a presença e a existência de pessoas de outros gêneros em espaços coletivos. E é para ajudar a resolver este problema que a Neutraliza foi concebida :)
 - Pessoas não-binárias e intersexuais existem.
-- Exemplo das manchetes sobre as cientistas brasileiras do Covid
-
-### O que é linguagem inclusiva?
-- Uma linguagem que é acessível para pessoas com diferentes habilidades de leitura. O uso de desinências como o X ou o @ (como em "amig@s" / "amigxs") prejudica a compreensão de pessoas que utilizam leitores de tela. 
+- Exemplo das manchetes sobre as cientistas brasileiras que sequenciaram o Covid apagadas pelas manchetes "Cientistas brasileiros" / "Pesquisadores brasileiros".
 
 ### Por quê precisamos de um tradutor para linguagem gênero-neutra e inclusiva?
-- Quebrar a resistência. Ao te entregar um texto traduzido
-- Disseminar conhecimento e avançar a pauta
-- mais empresas e instituições acolhendo a diversidade
+- Quebrar a resistência de entrada. Ao te entregar um tradutor de linguagem gênero-neutra e inclusiva, o esforço para empregar essa linguagem é eliminado ao máximo, tornando a ação de incluir todas as pessoas a partir da comunicação tão simples quando um ctrl+c, ctrl+v :)
+- Disseminar conhecimento e avançar a pauta.
+- mais empresas e instituições acolhendo a diversidade através de ações objetivas e concretas.
 - Palavras constroem mundo! Está no nosso alcance construir o mundo em que queremos viver.
-
-
-
