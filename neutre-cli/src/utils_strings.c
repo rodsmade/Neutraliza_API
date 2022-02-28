@@ -3,7 +3,7 @@
 /**
  * In order for this function to work properly with NO LEAKS, body HAS TO BE
  * malloced previously. It WILL be freed. So it's reasonable to call:
- * my_string = append_string(strdup(""), 2, "some", "string");
+ * my_string = append_string(strdup("here's "), 2, "some ", "strings");
 **/
 char	*append_n_strs(char* body, int count_append, char *appendage, ...)
 {
@@ -16,6 +16,7 @@ char	*append_n_strs(char* body, int count_append, char *appendage, ...)
 	int		count;
 
 	va_start(args, appendage);
+
 	// append first argument
 	body_len = strlen(body);
 	appendage_len = strlen(appendage);
@@ -42,6 +43,8 @@ char	*append_n_strs(char* body, int count_append, char *appendage, ...)
 				new_str[body_len + i] = arg[i];
 		}
 	}
+
 	va_end(args);
+
 	return (new_str);
 }

@@ -46,13 +46,7 @@ static void	printl_endpoint_digest(t_endpoint endpoint)
 											, endpoint.uri);
 	return;
 }
-/**
- * "\"log-type\":\"[REQUEST]\"" 													- total de request
- * "\"log-type\":\"[ERROR]\"" 														- total de erros
- * "\"log-type\":\"[INFO]\""														- total infos
- * "\"log-type\":\"[REQUEST]\"", "\"uri\":\"/translate\"", "\"method\":\"POST\""	- total de request por endpoint e método
- * "\"log-type\":\"[RESPONSE]\"" "\"status_code\":\"400_BAD_REQUEST\""				- total de bad requests
- */
+
 void	display_dashboard(void)
 {
 	t_endpoint	endpoints[3];

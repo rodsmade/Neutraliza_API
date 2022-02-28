@@ -1,6 +1,6 @@
 #include "neutraliza-cli.h"
 
-void	check_double_dash(char *argv, t_exec_flags *exec_flags)
+static void	check_double_dash(char *argv, t_exec_flags *exec_flags)
 {
 	if (strcmp(&argv[2], "dashboard") == 0)
 		exec_flags->opt_d = 1;
@@ -27,7 +27,7 @@ void	check_double_dash(char *argv, t_exec_flags *exec_flags)
 	return ;
 }
 
-void	check_single_dash(char *argv, t_exec_flags *exec_flags)
+static void	check_single_dash(char *argv, t_exec_flags *exec_flags)
 {
 	int	i = 0;
 
@@ -75,7 +75,7 @@ void	capture_flags(int argc, char *argv[], t_exec_flags *exec_flags)
 	return ;
 }
 
-void	check_flags_consistency(t_exec_flags *exec_flags)
+void	check_flags_concurrency(t_exec_flags *exec_flags)
 {
 	// crazy boolean logic BUT. if it is NOT the case that ONLY ONE between 
 	// d, h or a flags is true, than REFUSE INPUT because the three operations

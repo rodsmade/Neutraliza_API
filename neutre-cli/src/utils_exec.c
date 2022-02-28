@@ -24,6 +24,6 @@ void	execute_cmd(t_exec_flags *exec_flags)
 			printf("printa logs de info\n");
 	}
 	else
-		printf("algo de errado não está certo\n");
+		print_help_msg_exit();
 	return ;
 }

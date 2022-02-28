@@ -1,7 +1,7 @@
 #include "neutraliza-cli.h"
 
 int	match_entry_by_str(char *line, char *log_type, char *uri, char *method)
-// devolve 1 se bate tds os critérios, 0 c.c.
+// returns 1 if entry matches all criteria, 0 otherwise.
 {
 	char	*arg;
 

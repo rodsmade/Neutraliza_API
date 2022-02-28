@@ -59,11 +59,11 @@ void		ft_free_arr(void ***arr);
 void		ft_free_ptr(void **ptr);
 
 // utils_log_search.c
-int count_logs(char *log_type, char *uri, char *method);
+int			count_logs(char *log_type, char *uri, char *method);
 
 // utils_parsing.c
 void		capture_flags(int argc, char *argv[], t_exec_flags *exec_flags);
-void		check_flags_consistency(t_exec_flags *exec_flags);
+void		check_flags_concurrency(t_exec_flags *exec_flags);
 
 // utils_print.c
 void		print_help_msg_exit(void);
@@ -71,6 +71,6 @@ void		print_help_menu(void);
 void		display_dashboard(void);
 
 // utils_strings.c
-char	*append_n_strs(char* body, int count_append, char *appendage, ...);
+char		*append_n_strs(char* body, int count_append, char *appendage, ...);
 
 #endif

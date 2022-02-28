@@ -6,7 +6,7 @@ void	parse_input(int argc, char *argv[])
 
 	init_flags(&exec_flags);
 	capture_flags(argc, argv, &exec_flags);
-	check_flags_consistency(&exec_flags);
+	check_flags_concurrency(&exec_flags);
 	execute_cmd(&exec_flags);
 	return ;
 }
